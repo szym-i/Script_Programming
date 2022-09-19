@@ -9,8 +9,6 @@ class Day(Enum):
     FRI = 4
     SAT = 5
     SUN = 6
-    def difference(self,day):
-        return day.value - self.value
 
 days = ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Nidziela"]
 
@@ -24,8 +22,12 @@ class Term:
         self.duration = term_duration
 
     def __str__(self):
+        if self.minute < 10 and self.end_minute < 10:
+            return f'{days[self.day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:0{self.end_minute}]'
         if self.minute < 10:
-            return f'{days[self.day.value]} {self.hour}:0{str(self.minute)} [{self.duration}]'
+            return f'{days[self.day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:{self.end_minute}]'
+        if self.end_minute < 10:
+            return f'{days[self.day.value]} {self.hour}:{str(self.minute)}-{self.end_hour}:0{self.end_minute}]'
         return f'({days[self.day.value]} {self.hour}:{self.minute}-{self.end_hour}:{self.end_minute})'
 
     def earlierThan(self, term):
@@ -60,29 +62,52 @@ class Term:
         else:
             return f'Terms {self} and {term} are NOT equal'
 
+    def is_full_time(self):
+        if self.day.value >= 5:
+            return False
+        if self.day.value == 4:
+            if self.end_hour >= 17:
+                return False
+        return True
+
+    def is_valid(self):
+        if self.end_hour > 20:
+            return False
+        if self.end_hour == 20:
+            if self.end_minute != 0:
+                return False
+        if self.hour < 8:
+            return False
+        if self.hour == 8:
+            if self.minute != 0:
+                return False
+        return True
+
 years = ["0","Pierwszy","Drugi","Trzeci","Czwarty"]
 full_time = ["zaocznych","stacjonarnych"]
 
 class Lesson:
-    def __init__(self, lesson_term, lesson_name, lesson_lecturer, lesson_year):
+    def __init__(self, lesson_term, lesson_name, lesson_teacherName, lesson_year):
         self.term = lesson_term
         self.name = lesson_name
-        self.lecturer = lesson_lecturer
+        self.teacherName = lesson_teacherName
         self.year = lesson_year
-        self.full_time = True
+        self.full_time = self.term.is_full_time()
 
     def __str__(self):
-        return f'{self.name} {self.term}\n{years[self.year]} rok studiów {full_time[self.full_time]}\nProwadzący: {self.lecturer}'
+        return f'{self.name} {self.term}\n{years[self.year]} rok studiów {full_time[self.full_time]}\nProwadzący: {self.teacherName}'
 
+    @Term.setter
+    def term(self):
+        self.term.day.value = (self.term.day.value+1)%7
+        return True
+
+    def earlierDay(self):
+        self.term.day.value = (self.term.day.value-1)%7
+        return True
 
 if __name__ == '__main__':
-    lesson = Lesson(Term(Day.MON,10,50,60),"Programowanie Skryptowe","Stanisław Polak",2)
+    lesson = Lesson(Term(Day.FRI,8,0,60),"Programowanie Skryptowe","Stanisław Polak",2)
     print(lesson)
-    #term2 = Term(Day.TUE,9,50,60)
-    #term3 = Term(Day.TUE,9,50,60)
-    #print(term1.__str__())
-    #print(term2.__str__())
-    #print(term2.earlierThan(term1))
-    #print(term2.laterThan(term1))
-    #print(term2.equals(term3))
-
+    lesson.term()
+    print(lesson)
