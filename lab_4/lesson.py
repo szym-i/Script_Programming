@@ -87,27 +87,29 @@ years = ["0","Pierwszy","Drugi","Trzeci","Czwarty"]
 full_time = ["zaocznych","stacjonarnych"]
 
 class Lesson:
-    def __init__(self, lesson_term, lesson_name, lesson_teacherName, lesson_year):
-        self.term = lesson_term
+    def __init__(self, term, lesson_name, teacherName, year):
+        self.term = term
         self.name = lesson_name
-        self.teacherName = lesson_teacherName
-        self.year = lesson_year
+        self.teacherName = teacherName
+        self.year = year
         self.full_time = self.term.is_full_time()
 
     def __str__(self):
         return f'{self.name} {self.term}\n{years[self.year]} rok studiów {full_time[self.full_time]}\nProwadzący: {self.teacherName}'
 
-    @Term.setter
-    def term(self):
-        self.term.day.value = (self.term.day.value+1)%7
+    def laterDay(self):
+        self.term.day = Day((self.term.day.value+1)%7)
+        self.full_time = self.term.is_full_time()
         return True
-
+    
     def earlierDay(self):
-        self.term.day.value = (self.term.day.value-1)%7
+        self.term.day = Day((self.term.day.value-1)%7)
+        self.full_time = self.term.is_full_time()
         return True
 
 if __name__ == '__main__':
     lesson = Lesson(Term(Day.FRI,8,0,60),"Programowanie Skryptowe","Stanisław Polak",2)
     print(lesson)
-    lesson.term()
-    print(lesson)
+    for i in range(0,7):
+        lesson.laterDay()
+        print(lesson)
