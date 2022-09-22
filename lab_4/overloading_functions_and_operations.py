@@ -1,8 +1,8 @@
 class Term:
-    def __init__(self, term_hour, term_minute, term_duration):
-        self.hour = term_hour
-        self.minute = term_minute
-        self.duration = term_duration
+    def __init__(self, hour, minute, duration=90):
+        self.hour = hour
+        self.minute = minute
+        self.duration = duration
 
     def __str__(self):
         if self.minute < 10:
@@ -76,7 +76,7 @@ class Term:
             return False
 
 if __name__ == '__main__':
-    term1 = Term(8,30,90)
+    term1 = Term(8,30)
     term2 = Term(9,45,30)
     term3 = Term(9,45,90)
     print(term1)
