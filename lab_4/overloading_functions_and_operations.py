@@ -47,7 +47,10 @@ class Term:
         return False
 
     def __sub__(self,other):
-        return Term(self.hour,self.minute,1)
+        end_hour = (other.hour + (other.duration+other.minute)//60)%24
+        end_minute = (other.minute + other.duration%60)%60
+        duration = (end_hour - other.hour)*60+end_minute+self.minute 
+        return Term(other.hour,other.minute,duration)
 
     def earlierThan(self, term):
         end_hour = (self.hour + (self.duration+self.minute)//60)%24

@@ -1,4 +1,5 @@
 from enum import Enum, unique
+import math
 
 @unique
 class Day(Enum):
@@ -10,7 +11,7 @@ class Day(Enum):
     SAT = 5
     SUN = 6
 
-days = ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Nidziela"]
+days = ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"]
 
 class Term:
     def __init__(self, term_day, term_hour, term_minute, term_duration):
@@ -23,11 +24,11 @@ class Term:
 
     def __str__(self):
         if self.minute < 10 and self.end_minute < 10:
-            return f'{days[self.day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:0{self.end_minute}]'
+            return f'({days[self.day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:0{self.end_minute})'
         if self.minute < 10:
-            return f'{days[self.day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:{self.end_minute}]'
+            return f'({days[self.day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:{self.end_minute})'
         if self.end_minute < 10:
-            return f'{days[self.day.value]} {self.hour}:{str(self.minute)}-{self.end_hour}:0{self.end_minute}]'
+            return f'({days[self.day.value]} {self.hour}:{str(self.minute)}-{self.end_hour}:0{self.end_minute})'
         return f'({days[self.day.value]} {self.hour}:{self.minute}-{self.end_hour}:{self.end_minute})'
 
     def earlierThan(self, term):
@@ -78,9 +79,6 @@ class Term:
                 return False
         if self.hour < 8:
             return False
-        if self.hour == 8:
-            if self.minute != 0:
-                return False
         return True
 
 years = ["0","Pierwszy","Drugi","Trzeci","Czwarty"]
@@ -107,9 +105,32 @@ class Lesson:
         self.full_time = self.term.is_full_time()
         return True
 
+    def laterTime(self):
+        start_hour = (self.term.hour + (self.term.duration+self.term.minute)//60)%24
+        start_minute = (self.term.minute + self.term.duration%60)%60
+        end_hour = (start_hour + (self.term.duration+start_minute)//60)%24
+        end_minute = (start_minute + self.term.duration%60)%60
+        if Term(self.term.day,start_hour,start_minute,self.term.duration).is_valid():
+            self.term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
+            return True
+        return False
+
+    def earlierTime(self):
+        start_hour = self.term.hour - math.ceil((self.term.duration - self.term.minute)/60)
+        start_minute = (self.term.minute-self.term.duration)%60
+        if Term(self.term.day, start_hour, start_minute, self.term.duration).is_valid():
+            self.term = Term(self.term.day, start_hour, start_minute, self.term.duration)
+            return True
+        return False
+
 if __name__ == '__main__':
-    lesson = Lesson(Term(Day.FRI,8,0,60),"Programowanie Skryptowe","Stanisław Polak",2)
+    lesson = Lesson(Term(Day.FRI,18,29,91),"Programowanie Skryptowe","Stanisław Polak",2)
     print(lesson)
     for i in range(0,7):
         lesson.laterDay()
         print(lesson)
+    while lesson.laterTime():
+        print(lesson)
+    while lesson.earlierTime():
+        print(lesson)
+    print(lesson)
