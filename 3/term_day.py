@@ -1,5 +1,6 @@
 from enum import Enum, unique
 
+
 @unique
 class Day(Enum):
     MON = 0
@@ -15,6 +16,7 @@ class Day(Enum):
 def nthDayFrom(n, day):
     return Day((day.value+n%7)%7)
 days = ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Nidziela"]
+
 
 class Term:
     def __init__(self,term_day, term_hour, term_minute, term_duration):
