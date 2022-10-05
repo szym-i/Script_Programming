@@ -4,14 +4,9 @@ from fractions import Fraction
 
 def sum(arg1, arg2):
     try:
-        arg1 = complex(arg1)
+        return complex(arg1) + complex(arg2)
     except:
-        return arg2
-    try:
-        arg2 = complex(arg2)
-    except:
-        return arg1
-    return arg1+arg2
+        raise ValueError
     
 
 if __name__ == '__main__':
