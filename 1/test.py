@@ -27,7 +27,7 @@ class Test_TestSum(unittest.TestCase):
     def test_fraction_fraction(self):
         self.assertEqual(sum(Fraction(11/33),Fraction(1/3)),2/3)
 
-    def test_raise(self):
+    def test_bad_string_integer(self):
         with self.assertRaises(ValueError):
             sum(2,'Ala ma kota123') 
 
