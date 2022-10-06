@@ -7,7 +7,6 @@ def sum(arg1, arg2):
         return complex(arg1) + complex(arg2)
     except:
         raise ValueError
-    
 
 if __name__ == '__main__':
     a = 9 + 1j
