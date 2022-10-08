@@ -17,7 +17,7 @@ def if_prime(n):
 
 if __name__ == '__main__':
     x = len(sys.argv)
-    print(f"Total arguments passed {x-1}")
+    print(f"Total arguments passed {x-1}. Prime numbers:")
     for i in range(1,x):
         if if_prime(sys.argv[i]) == True:
             print(sys.argv[i])
