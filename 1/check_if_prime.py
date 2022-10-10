@@ -19,5 +19,5 @@ if __name__ == '__main__':
     x = len(sys.argv)
     print(f"Total arguments passed {x-1}. Prime numbers:")
     for i in range(1,x):
-        if if_prime(sys.argv[i]) == True:
+        if if_prime(sys.argv[i]): #(== True) as default
             print(sys.argv[i])
