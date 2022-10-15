@@ -4,7 +4,7 @@ from fractions import Fraction
 
 def sum(arg1, arg2):
     try:
-        if isinstance(arg1,str): # wygląda skomplikowanie, ale to po to, aby móc używać ułamków w postaci stringa np. sum('1/2',1)
+        if isinstance(arg1,str): # to po to, aby móc używać ułamków w postaci stringa np. sum('1/2',1)
             if '/' in arg1:
                 arg1 = Fraction(arg1)
             else:

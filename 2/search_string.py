@@ -3,12 +3,13 @@ import re
 if __name__ == "__main__":
     while True:
         try:
-            str = input()
-            numbers = re.findall('[0-9]+', str)
-            words = re.findall('[a-z]+',str)
-            if words != None:
-                print(f"Words: {words}")
-            if numbers != None:
-                print(f"Numbers: {numbers}")
+            input_list = input().split()
+            for x in input_list:
+                numbers = re.findall('[0-9]+', x)
+                words = re.findall('[A-z]+', x)
+                if words != []:
+                    print(f"Words: {words}")
+                if numbers != []:
+                    print(f"Numbers: {numbers}")
         except:
             quit()
