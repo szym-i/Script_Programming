@@ -2,14 +2,24 @@ import re
 
 if __name__ == "__main__":
     while True:
+        words = re.compile("[A-z]+")
+        numbers = re.compile("[0-9]+")
         try:
             input_list = input().split()
-            for x in input_list:
-                numbers = re.findall('[0-9]+', x)
-                words = re.findall('[A-z]+', x)
-                if words != []:
-                    print(f"Words: {words}")
-                if numbers != []:
-                    print(f"Numbers: {numbers}")
+            for w in input_list:
+                a = re.split('(\d+)',w)
+                for e in a:
+                    word = words.match(e)
+                    number = numbers.match(e)
+                    match word:
+                        case None:
+                            pass
+                        case _:
+                            print(f"word: {e}")
+                    match number:
+                        case None:
+                            pass
+                        case _:
+                            print(f"number: {e}")
         except:
             quit()
