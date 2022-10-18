@@ -1,16 +1,16 @@
 import re
 
 if __name__ == "__main__":
+    words = re.compile("[A-z]+")
+    numbers = re.compile("[0-9]+")
     while True:
-        words = re.compile("[A-z]+")
-        numbers = re.compile("[0-9]+")
         try:
             input_list = input().split()
             for w in input_list:
-                a = re.split('(\d+)',w)
-                for e in a:
-                    word = words.match(e)
-                    number = numbers.match(e)
+                splitted = re.split('(\d+)',w)
+                for e in splitted:
+                    word = words.match(e) # jeśli nie matchuje do patternu czyli nie jest słowem przyjmie wartość None
+                    number = numbers.match(e) # to samo tylko z liczbą
                     match word:
                         case None:
                             pass
@@ -21,5 +21,5 @@ if __name__ == "__main__":
                             pass
                         case _:
                             print(f"number: {e}")
-        except:
+        except EOFError:
             quit()
