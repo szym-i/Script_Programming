@@ -1,7 +1,7 @@
 import re
 
 if __name__ == "__main__":
-    words = re.compile("[A-z]+")
+    words = re.compile("[A-z-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+")
     numbers = re.compile("[0-9]+")
     while True:
         try:
@@ -22,4 +22,6 @@ if __name__ == "__main__":
                         case _:
                             print(f"number: {e}")
         except EOFError:
+            quit()
+        except KeyboardInterrupt:
             quit()

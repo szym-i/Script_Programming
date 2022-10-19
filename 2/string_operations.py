@@ -1,5 +1,9 @@
-lancuch1 = "Pierwsza linijka lancuch1\ndruga linijka lancuch1 "
-lancuch2 = "Pierwsza linijka lancuch2\ndruga linijka lancuch2 "
+#-*-coding: utf-8-*-
+
+lancuch1 = '''Pierwsza linijka lancuch1
+druga linijka lancuch1 '''
+lancuch2 = '''Pierwsza linijka lancuch2
+druga linijka lancuch2 '''
 lancuch = "123456789"
 
 if __name__ == '__main__':
