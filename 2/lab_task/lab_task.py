@@ -3,41 +3,42 @@ import re
 import os.path
 
 def convert(content, leading_spaces, spaces, c):
-    pattern = re.compile('.*\\'+c+'$')
-    new_content = ""
-    for i in range(0,len(content)):
-        l_s = 0
-        for j in content[i]:
-            if j == ' ':
-                l_s+=1
-        if spaces and leading_spaces:
-            content[i] = re.sub(r'\s+', '', content[i])   
-        if spaces and not leading_spaces:
-            content[i] = l_s*' '+re.sub(r'\s+', '', content[i])       
-        if leading_spaces:
-            content[i] = re.sub(r'^\s+', '', content[i], flags=re.MULTILINE) #flaga sprawia że ^ działa na początku każdej linii a nie tylko tekstu   
-        if pattern.match(content[i]) != None:
-            new_content+=content[i][:-1]
-        else:
-            if i != len(content)-1:
-                new_content+=content[i]+'\n'
-            else:
-                new_content+=content[i]
-    print(f"Output:\n{new_content}",end="")
+    pattern = '\\'+c+r'\n'
+    content = re.sub(pattern,'',content)
+    if spaces and leading_spaces: # --spaces --leading-spaces
+        tmp_content=""
+        for line in content.split('\n'):
+            line = re.sub(r'\s+', '', line) 
+            tmp_content+=(line+'\n')
+        content = tmp_content[:-1] # pozbywamy się \n z końca
+    elif spaces: # --spaces
+        tmp_content=""
+        for line in content.split('\n'):
+            l_s = 0 # number of leading spaces
+            for c in line:
+                if c == ' ':
+                    l_s+=1
+                else:
+                    break
+            line = re.sub(r'\s+', '', line) 
+            tmp_content+=(l_s*' '+line+'\n')# add leading spaces back
+        content = tmp_content[:-1] # remove additional \n
+    elif leading_spaces: # --leading spaces
+        content = re.sub(r'^\s+', '', content)         
+    print(f"Output:\n{content}",end="")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('filenames', help = "enter files", nargs="+")
-    parser.add_argument('-c',type=str, help='enter your file', nargs=1, required=False, default = '\\')
-    parser.add_argument('--leading-spaces', help='use if you want to remove leading spaces', action = "store_true", required=False)
-    parser.add_argument('--spaces', help='use if you want to remove duplicated spaces', action = "store_true", required=False)
+    parser.add_argument('file', help = "enter files", nargs="*")
+    parser.add_argument('-c',type=str, help='enter line continuation character', nargs=1, required=False, default = '\\')
+    parser.add_argument('--leading-spaces', help='use if you want to remove leading spaces', action = "store_true")
+    parser.add_argument('--spaces', help='use if you want to remove whitespaces', action = "store_true")
     args = parser.parse_args()
-    print(args)
     c = args.c[0]
-    print(f"-c = '{c}' (default:'\\')")
+    print(f"-c = '{c}'")
     print(f"--leading-spaces: {args.leading_spaces}")
     print(f"--spaces: {args.spaces}")
-    if args.filenames == None:
+    if args.file == []:
         print("Convert input mode (press Ctrl+D to stop)")
         content = ""
         try:
@@ -46,16 +47,14 @@ if __name__ == '__main__':
                 content+=(user+'\n')
         except EOFError:
             print("Converted output:")
-            content = content[:-1].split('\n')
-            print(content)
-            convert(content, args.leading_spaces, args.spaces, c)
+            convert(content[:-1], args.leading_spaces, args.spaces, c)
     else:
-        for filename in args.filenames:
+        for filename in args.file:
             try:
                 if os.path.isfile(filename):
                     file = open(filename,"r")
                     print(f"File {filename} succesfully opened")
-                    content = file.read().split('\n')
+                    content = file.read()#.split('\n')
                     file.close()
                     convert(content, args.leading_spaces, args.spaces, c)
                 else:
