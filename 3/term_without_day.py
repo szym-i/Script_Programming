@@ -31,9 +31,8 @@ class Term:
 
     def equals(self, term):
         if self.hour == term.hour and self.minute == term.minute and self.duration == term.duration:
-            return f'Terms {self} and {term} are equal'
-        else:
-            return f'Terms {self} and {term} are NOT equal'
+            return True
+        return False
 
 if __name__ == '__main__':
     term1 = Term(10,50,60)
@@ -42,4 +41,5 @@ if __name__ == '__main__':
     print(term2.__str__())
     print(term1.earlierThan(term2))
     print(term1.laterThan(term2))
+    print(term1.equals(term1))
     

@@ -1,29 +1,12 @@
-from enum import Enum, unique
-
-
-@unique
-class Day(Enum):
-    MON = 0
-    TUE = 1
-    WED = 2
-    THU = 3
-    FRI = 4
-    SAT = 5
-    SUN = 6
-    def difference(self,day):
-        return day.value - self.value
-
-def nthDayFrom(n, day):
-    return Day((day.value+n%7)%7)
 days = ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Nidziela"]
 
 
 class Term:
-    def __init__(self,term_day, term_hour, term_minute, term_duration):
+    def __init__(self,term_day, term_hour, term_minute):
         self.__day = term_day
         self.hour = term_hour
         self.minute = term_minute
-        self.duration = term_duration
+        self.duration = 90
 
     def __str__(self):
         if self.minute < 10:
@@ -58,14 +41,14 @@ class Term:
 
     def equals(self, term):
         if self.__day.value == term.__day.value and self.hour == term.hour and self.minute == term.minute and self.duration == term.duration:
-            return f'Terms {self} and {term} are equal'
-        else:
-            return f'Terms {self} and {term} are NOT equal'
+            return True
+        return False
 
 if __name__ == '__main__':
-    term1 = Term(Day.MON,10,50,60)
-    term2 = Term(Day.TUE,9,50,60)
-    term3 = Term(Day.TUE,9,50,60)
+    from day import Day
+    term1 = Term(Day.MON,10,50)
+    term2 = Term(Day.TUE,9,50)
+    term3 = Term(Day.TUE,9,50)
     print(term1.__str__())
     print(term2.__str__())
     print(term2.earlierThan(term1))

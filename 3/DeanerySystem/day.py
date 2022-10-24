@@ -3,19 +3,14 @@ from enum import Enum, unique
 
 @unique
 class Day(Enum):
-    MON = 0
-    TUE = 1
-    WED = 2
-    THU = 3
-    FRI = 4
-    SAT = 5
-    SUN = 6
+    MON = 0; TUE = 1; WED = 2; THU = 3; FRI = 4; SAT = 5; SUN = 6
     def difference(self,day):
+        if abs(self.value-day.value) < abs(day.value - self.value):
+            return self.value - day.value
         return day.value - self.value
 
 def nthDayFrom(n, day):
-    return Day((day.value+n%7)%7)
-
+    return Day(((day.value+n)%7)%7)
 if __name__ == '__main__':
     day = Day.SUN
     print(day.name)
@@ -23,5 +18,3 @@ if __name__ == '__main__':
     print(Day.MON.difference(Day.SUN))
     print(Day.SUN.difference(Day.MON))
     print(Day.SUN.difference(Day.SAT))
-    #n = int(input())
-    #print(nthDayFrom(n,day).name)
