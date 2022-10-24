@@ -3,7 +3,7 @@ from DeanerySystem.day import Day, nthDayFrom
 from DeanerySystem.term import Term
 
 
-class Test_TestDay(unittest.TestCase):
+class Test_DeanerySystem(unittest.TestCase):
 
     def test_nth(self):
         self.assertEqual(nthDayFrom(1, Day.SAT), Day.SUN)
@@ -19,9 +19,9 @@ class Test_TestDay(unittest.TestCase):
 
     def test_earlierThan(self):
         self.assertEqual(Term(Day.MON,9,45).earlierThan(Term(Day.MON,9,45)), False)
-        self.assertEqual(Term(Day.MON,9,45).earlierThan(Term(Day.MON,9,45)), False)
-        self.assertEqual(Term(Day.MON,9,45).earlierThan(Term(Day.MON,9,45)), False)
-        self.assertEqual(Term(Day.MON,9,45).earlierThan(Term(Day.MON,9,45)), False)
+        self.assertEqual(Term(Day.MON,10,30).earlierThan(Term(Day.TUE,9,45)), True)
+        self.assertEqual(Term(Day.WED,15,5).earlierThan(Term(Day.MON,9,45)), False)
+        self.assertEqual(Term(Day.MON,8,0).earlierThan(Term(Day.MON,9,45)), True)
 
     def test_laterThan(self):
         self.assertEqual(Term(Day.MON,9,45).laterThan(Term(Day.MON,11,45)), False)
