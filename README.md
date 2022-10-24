@@ -5,4 +5,4 @@ Each laboratory, I could get 5 points, 3x1 for home tasks, and max 2 for tasks d
 My results:
 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |10 |11 |12 |sum|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-|   |   |   |   |   |   |   |   |   |   |   |   | 0 |
+| 4 |2,5|   |   |   |   |   |   |   |   |   |   |6,5|
