@@ -14,28 +14,37 @@ class Term:
         return f'{days[self.__day.value]} {self.hour}:{self.minute} [{self.duration}]'
 
     def earlierThan(self, term):
-        end_hour = (self.hour + (self.duration+self.minute)//60)%24
-        end_minute = (self.minute + self.duration%60)%60
+        #end_hour = (self.hour + (self.duration+self.minute)//60)%24
+        #end_minute = (self.minute + self.duration%60)%60
+        #if self.__day.value < term.__day.value:
+       #     return True
+        #if self.__day.value == term.__day.value:
+         #   if end_hour < term.hour: 
+          #      return True
+           # elif end_hour == term.hour:
+            #    if end_minute < term.minute:
+             #       return True
+        #return False
         if self.__day.value < term.__day.value:
             return True
         if self.__day.value == term.__day.value:
-            if end_hour < term.hour: 
+            if self.hour < term.hour: 
                 return True
-            elif end_hour == term.hour:
-                if end_minute < term.minute:
+            elif self.hour == term.hour:
+                if self.minute < term.minute:
                     return True
         return False
     
     def laterThan(self, term):
-        end_hour = (term.hour + (term.minute+term.duration)//60)%24
-        end_minute = (term.minute + term.duration%60)%60
+        #end_hour = (term.hour + (term.minute+term.duration)//60)%24
+        #end_minute = (term.minute + term.duration%60)%60
         if self.__day.value > term.__day.value:
             return True
         if self.__day.value == term.__day.value:
-            if self.hour > end_hour:
+            if self.hour > term.hour:
                 return True
-            elif self.hour == end_hour:
-                if self.minute > end_minute:
+            elif self.hour == term.hour:
+                if self.minute > term.minute:
                     return True
         return False
 

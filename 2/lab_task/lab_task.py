@@ -35,7 +35,7 @@ if __name__ == '__main__':
     parser.add_argument('--spaces', help='use if you want to remove whitespaces', action = "store_true")
     args = parser.parse_args()
     c = args.c[0]
-    print(f"-c = '{c}'")
+    print(f"-c = '{c}' (default = '\\')")
     print(f"--leading-spaces: {args.leading_spaces}")
     print(f"--spaces: {args.spaces}")
     if args.file == []:

@@ -5,21 +5,18 @@ def color(id):
 ##################################
 class Klasa(object):
     tab = [1,2,3]
-    def __init__(self, tab):
+    def __init__(self, tab, zmienna1, zmienna2):
         self.tab = tab
+        self._zmienna1 = zmienna1
+        self.__zmienna2 = zmienna2
         print("Wywołano metodę '{}()' obiektu\t\t'\033[{}m{}\033[0m'".format(sys._getframe().f_code.co_name, color(id(self)), id(self)))
 
     def __del__(self):
         print("Wywołano metodę '{}()' obiektu\t\t'\033[{}m{}\033[0m'".format(sys._getframe().f_code.co_name, color(id(self)), id(self)))
 
-    def __str__(self):
-        return "Wywołano metodę '{}()' obiektu\t\t'\033[{}m{}\033[0m'".format(sys._getframe().f_code.co_name, color(id(self)), id(self))
-
-    def __repr__(self):
-        return "Wywołano metodę '{}()' obiektu\t\t'\033[{}m{}\033[0m'".format(sys._getframe().f_code.co_name, color(id(self)), id(self))
-
     def metodaInstancyjna(self):
-        print("Wywołano metodę '{}()' obiektu\t'\033[{}m{}\033[0m'".format(sys._getframe().f_code.co_name, color(id(self)), id(self)))
+        print(f"self.tab = {self.tab}")
+        print(f"Klasa.tab = {Klasa.tab}")
 
     @classmethod
     def metodaKlasowa(cls):
