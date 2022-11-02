@@ -1,3 +1,3 @@
 Szymon: ['']
-Ala: ['c']
+Ala: ['']
 Tomek: ['']

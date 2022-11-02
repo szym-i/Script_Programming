@@ -4,14 +4,46 @@ from datetime import date
 import argparse
 import os
 
+def read_usr():
+    d = {}
+    with open("usr.txt","r") as f:
+        try:
+            for line in f:
+                k, l = line.strip().split(':')
+                l = l[1:-1]
+                res = l.strip('][').split(', ')
+                for i in range(0,len(res)):
+                    res[i] = res[i][1:-1]
+                d[k] = res
+        except:
+            print("Oops, reading usr.txt file went wrong")
+            return {}
+    f.close()
+    return d
+
 
 class Library:
-    def __init__(self):
+    def __init__(self,filename):
         self.lib = {}
-        self.usr = {}
+        try:
+            if os.path.isfile(filename):
+                with open(filename) as file:
+                    for line in file:
+                        self.parseFileLine(line)
+                file.close()
+            else:
+                print(f"File {filename} does not exist")
+        except PermissionError:
+            print(f"No permission to open {filename}")
+        self.usr = read_usr()
 
     def __str__(self):
-        return str(self.lib)+'\n'+str(self.usr)
+        s = ""
+        for k,v in self.lib.items():
+            s+=k+':'+str(v)+"\n"
+        for k,v in self.usr.items():
+            s+=k+':'+str(v)+'\n'
+        return s
 
     def borrow(self,book,name):
         if book in self.lib.keys():
@@ -63,17 +95,7 @@ if __name__ == '__main__':
     #print(repr("Ala\n ma kota")) #formalna reprezentacja obiektu
     args = parser.parse_args()
     filename = args.file[0]
-    library = Library()
-    try:
-        if os.path.isfile(filename):
-            with open(filename) as file:
-                for line in file:
-                    library.parseFileLine(line)
-            file.close()
-        else:
-            print(f"File {filename} does not exist")
-    except PermissionError:
-        print(f"No permission to open {filename}")
+    library = Library(filename)
     print(f"{library}")
     print("Welcome in my library, use Ctrl+D to stop")
     try:
@@ -86,4 +108,7 @@ if __name__ == '__main__':
         for k,v in library.lib.items():
             file.write(f"{k}: {v}\n")
         file.close()
+        with open("usr.txt","w") as f:
+            for k,v in library.usr.items():
+                f.write(f"{k}: {v}\n")
         print(library)

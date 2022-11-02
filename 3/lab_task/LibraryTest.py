@@ -1,14 +1,11 @@
 import unittest
-import library
+from library import Library
 
 
-class Test_DeanerySystem(unittest.TestCase):
-
-    def test_nth(self):
-        self.assertEqual(nthDayFrom(1, Day.SAT), Day.SUN)
-        self.assertEqual(nthDayFrom(2, Day.SAT), Day.MON)
-        self.assertEqual(nthDayFrom(-1, Day.TUE), Day.MON)
-        self.assertEqual(nthDayFrom(-2, Day.TUE), Day.SUN)
+class Test_Library(unittest.TestCase):
+    def test__str__(self):
+        library1 = Library("tests/test1.txt")
+        self.assertEqual(str(library1), "1984:2\nGwiezdne Wojny:2\nSzymon:['']\nAla:['c']\nTomek:['']\n")
 
 if __name__ == '__main__':
     unittest.main()
