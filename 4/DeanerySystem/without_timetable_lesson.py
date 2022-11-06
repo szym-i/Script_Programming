@@ -6,26 +6,68 @@ years = ["0","Pierwszy","Drugi","Trzeci","Czwarty"]
 full_time = ["zaocznych","stacjonarnych"]
 
 class Lesson:
-    def __init__(self, term, lesson_name, teacherName, year):
-        self.term = term
-        self.name = lesson_name
-        self.teacherName = teacherName
-        self.year = year
-        self.fullTime = self.term.is_full_time()
+    def __init__(self, term: Term, lesson_name: str, teacherName: str, year: int):
+        self.__term = term
+        self.__name = lesson_name
+        self.__teacherName = teacherName
+        self.__year = year
+        self.__fullTime = self.term.is_full_time()
+
+    @property
+    def term(self):
+        return self.__term
+
+    @term.setter
+    def term(self,var):
+        self.__term = var
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self,var):
+        self.__name = var
+
+    @property
+    def teacherName(self):
+        return self.__teacherName
+
+    @teacherName.setter
+    def teacherName(self,var):
+        self.__teacherName = var
+
+    @property
+    def year(self):
+        return self.__year
+
+    @year.setter
+    def year(self,var):
+        self.__year = var
+
+    @property
+    def fullTime(self):
+        return self.__fullTime
+
+    @fullTime.setter
+    def fullTime(self,var):
+        self.__fullTime = var
+
+
 
     def __str__(self):
         return f'{self.name} {self.term}\n{years[self.year]} rok studiów {full_time[self.fullTime]}\nProwadzący: {self.teacherName}'
 
     def laterDay(self):
-        if Term(Day((self.term.day.value+1)%7),self.term.hour,self.term.minute,self.term.duration).is_full_time() != self.fullTime:
+        if Term(Day((self.term.day_value+1)%7),self.term.hour,self.term.minute,self.term.duration).is_full_time() != self.fullTime:
             return False
-        self.term.day = Day((self.term.day.value+1)%7)
+        self.term.day = Day((self.term.day_value+1)%7)
         return True
     
     def earlierDay(self):
-        if Term(Day((self.term.day.value-1)%7),self.term.hour,self.term.minute,self.term.duration).is_full_time() != self.fullTime:
+        if Term(Day((self.term.day_value-1)%7),self.term.hour,self.term.minute,self.term.duration).is_full_time() != self.fullTime:
             return False
-        self.term.day = Day((self.term.day.value-1)%7)
+        self.term.day = Day((self.term.day_value-1)%7)
         return True
 
     def laterTime(self):

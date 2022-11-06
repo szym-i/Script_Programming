@@ -14,11 +14,3 @@ class Day(Enum):
 
 def nthDayFrom(n, day):
     return Day(((day.value+n)%7)%7)
-
-if __name__ == '__main__':
-    day = Day.SUN
-    print(day.name)
-    print(Day.MON.difference(Day.TUE))
-    print(Day.MON.difference(Day.SUN))
-    print(Day.SUN.difference(Day.MON))
-    print(Day.SUN.difference(Day.SAT))
