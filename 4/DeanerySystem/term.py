@@ -52,15 +52,14 @@ class Term:
     def duration(self):
         return self.__duration
 
-
     def __str__(self):
         if self.minute < 10 and self.end_minute < 10:
-            return f'({days[self.__day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:0{self.end_minute})'
+            return f'{days[self.__day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:0{self.end_minute}'
         if self.minute < 10:
-            return f'({days[self.__day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:{self.end_minute})'
+            return f'{days[self.__day.value]} {self.hour}:0{str(self.minute)}-{self.end_hour}:{self.end_minute}'
         if self.end_minute < 10:
-            return f'({days[self.__day.value]} {self.hour}:{str(self.minute)}-{self.end_hour}:0{self.end_minute})'
-        return f'({days[self.__day.value]} {self.hour}:{self.minute}-{self.end_hour}:{self.end_minute})'
+            return f'{days[self.__day.value]} {self.hour}:{str(self.minute)}-{self.end_hour}:0{self.end_minute}'
+        return f'{days[self.__day.value]} {self.hour}:{self.minute}-{self.end_hour}:{self.end_minute}'
     
     def earlierThan(self, term) -> bool:
         if self.__day.value < term.__day.value:
