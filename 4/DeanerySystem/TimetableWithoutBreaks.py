@@ -1,7 +1,7 @@
 from typing import List
 from day import Day
 from term import Term,days
-from with_timetable_lesson import Lesson
+from timetable_lesson import Lesson
 from action import Action
 
 
@@ -13,16 +13,52 @@ class TimetableWithoutBreaks(object):
         self.number_of_lessons = 0
 
     def __str__(self):
-        print(f"{105*'*'}")
-        print(f"*{' '*11} ",end="")
+        s = ""
+        s+=f"{105*'*'}\n"
+        s+=f"*{' '*11} "
         for i in range(0,7):
-            print(f"*{days[i]:^12}",end="")
-        print("*")
+            s+=f"*{days[i]:^12}"
+        s+="*\n"
         for i in range(0, 8):
-            print(f'{105*"*"}\n*{times[i]:^12}*{str(self.table[i][0][0]):^12}*{str(self.table[i][1][0]):^12}*{str(self.table[i][2][0]):^12}*{str(self.table[i][3][0]):^12}*{str(self.table[i][4][0]):^12}*{str(self.table[i][5][0]):^12}*{str(self.table[i][6][0]):^12}*')
-        print(f"{105*'*'}")
+            s+=f'{105*"*"}\n*{times[i]:^12}*{str(self.table[i][0][0]):^12}*{str(self.table[i][1][0]):^12}*{str(self.table[i][2][0]):^12}*{str(self.table[i][3][0]):^12}*{str(self.table[i][4][0]):^12}*{str(self.table[i][5][0]):^12}*{str(self.table[i][6][0]):^12}*\n'
+        s+=f"{105*'*'}"
+        return s
 
     def can_be_transferred_to(self, term: Term, fullTime: bool) -> bool:
+        if self.busy(term):
+            return False
+        if fullTime:
+            if term.day_value > 4 or term.hour < 8 or term.end_hour > 20:
+                return False
+            if term.day_value == 4 and term.hour > 7:
+                if term.end_hour > 17:
+                    return False
+                elif term.end_hour == 17:
+                    if term.end_minute != 0:
+                        return False
+        else:
+           if term.day_value < 4 or term.end_hour < 8 or term.end_hour > 20:
+               return False
+           if term.day_value == 4:
+               if term.hour < 17:
+                   return False
+        return True
+
+        if self.end_hour > 20:
+            return False
+        if self.end_hour == 20:
+            if self.end_minute != 0:
+                return False
+        if self.hour < 8:
+            return False
+        return True
+        if term.end_hour > 20:
+            return False
+        if term.end_hour == 20:
+            if term.end_minute != 0:
+                return False
+        if term.hour < 8:
+            return False
         if self.busy(term):
             return False
         return True
@@ -44,6 +80,7 @@ class TimetableWithoutBreaks(object):
             if self.table[t][d][0] == ' ':
                 self.table[t][d].pop()
                 self.table[t][d].append(lesson)
+                self.number_of_lessons+=1
                 return True
             return "The lesson cannot be placed if the timetable is already occupied"
         return "The lesson term is incorrect"
@@ -55,8 +92,8 @@ class TimetableWithoutBreaks(object):
                 result.append(Action(e))
             except:
                 pass
-        self.perform(result)
-        #return result
+        #self.perform(result)
+        return result
 
     def perform(self, actions: List[Action]):
         if self.number_of_lessons == 0:
@@ -93,12 +130,12 @@ class TimetableWithoutBreaks(object):
                     x+=1
 
 if __name__ == '__main__':
-    import sys
-    s = "t+ t+ t+ t+ t- t- t- t- t-"
+    s = "t- t- t- t-"
     tt = TimetableWithoutBreaks()
-    #lesson = Lesson(tt,Term(Day.THU,8,0),"Trzeci","Stanisław Polak",2)
-    #lesson1 = Lesson(tt,Term(Day.WED,8,0),"Drugi","Stanisław Polak",2)
+    lesson = Lesson(tt,Term(Day.THU,8,0),"Trzeci","Stanisław Polak",2)
+    lesson1 = Lesson(tt,Term(Day.WED,8,0),"Drugi","Stanisław Polak",2)
     lesson3 = Lesson(tt,Term(Day.WED,9,30),"Pierwszy","Stanisław Polak",2)
-    tt.__str__()
-    tt.parse(s.split())
-    tt.__str__()
+    print(tt)
+    actions = tt.parse(s.split())
+    tt.perform(actions)
+    #print(tt)
