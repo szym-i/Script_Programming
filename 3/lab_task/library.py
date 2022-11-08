@@ -4,38 +4,13 @@ from datetime import date
 import argparse
 import os
 
-def read_usr(filename):
-    d = {}
-    with open(filename,"r") as f:
-        try:
-            for line in f:
-                k, l = line.strip().split(':')
-                l = l[1:-1]
-                res = l.strip('][').split(', ')
-                for i in range(0,len(res)):
-                    res[i] = res[i][1:-1]
-                d[k] = res
-        except:
-            print(f"Oops, reading {filename} file went wrong")
-            return {}
-    f.close()
-    return d
-
 
 class Library:
     def __init__(self,filename,filename2="usr.txt"):
         self.lib = {}
-        try:
-            if os.path.isfile(filename):
-                with open(filename) as file:
-                    for line in file:
-                        self.parseFileLine(line)
-                file.close()
-            else:
-                print(f"File {filename} does not exist")
-        except PermissionError:
-            print(f"No permission to open {filename}")
-        self.usr = read_usr(filename2)
+        if filename != None:
+            self.read_lib(filename)
+        self.usr = self.read_usr(filename2)
         self.filename2 = filename2
 
     def __str__(self):
@@ -58,7 +33,7 @@ class Library:
             else:
                 return "Currently there are no copies of this book"
         else:
-            return "There is not such book in our library"
+            return "There is no such book in our library"
 
     def return_book(self,book,name):
         if name not in self.usr.keys() or book not in self.usr[name]:
@@ -86,6 +61,40 @@ class Library:
             return self.borrow(title,name)
         else:
             return "Use return/borrow operation"
+
+    def read_usr(self,filename):
+        d = {}
+        try:
+            with open(filename,"r") as f:
+                try:
+                    for line in f:
+                        k, l = line.strip().split(':')
+                        l = l[1:-1]
+                        res = l.strip('][').split(', ')
+                        for i in range(0,len(res)):
+                            res[i] = res[i][1:-1]
+                        d[k] = res
+                except:
+                    print(f"Oops, reading {filename} file went wrong")
+                    return {}
+        except FileNotFoundError:
+            print(f"No such {filename} file")
+            return {}
+        f.close()
+        return d
+
+    def read_lib(self,filename):
+        lib = {}
+        try:
+            if os.path.isfile(filename):
+                with open(filename) as file:
+                    for line in file:
+                        self.parseFileLine(line)
+                file.close()
+            else:
+                print(f"File {filename} does not exist")
+        except PermissionError:
+            print(f"No permission to open {filename}")
 
 
 if __name__ == '__main__':
