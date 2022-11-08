@@ -1,7 +1,7 @@
 from typing import List
 from day import Day
 from term import Term,days
-from timetable_lesson import Lesson
+from lesson import Lesson
 from action import Action
 
 

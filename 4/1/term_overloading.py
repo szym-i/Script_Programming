@@ -70,15 +70,3 @@ class Term:
         if self.__day.value == term.__day.value and self.hour == term.hour and self.minute == term.minute and self.duration == term.duration:
             return True
         return False
-
-if __name__ == '__main__':
-    #from DeanerySystem.day import Day
-    term1 = Term(Day.MON,10,50)
-    term2 = Term(Day.TUE,9,50)
-    term3 = Term(Day.TUE,9,50)
-    print(term1.__str__())
-    print(term2.__str__())
-    print(term2.earlierThan(term1))
-    print(term2.laterThan(term1))
-    print(term2.equals(term3))
-    
