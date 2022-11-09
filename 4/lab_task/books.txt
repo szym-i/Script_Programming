@@ -1,4 +1,5 @@
-Gwiezdne Wojny:2
-1984:0
-Symfonia C++:999
-a:1
+Gwiezdne Wojny: Michał Lasota, Wiktor Cichosz:None:None
+1984: George Orwell:None:None
+1984: George Orwell:None:None
+Symfonia C++:
+a:

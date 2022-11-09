@@ -3,6 +3,8 @@
 from datetime import date
 import argparse
 import os
+from reader import Reader
+from book import Book
 
 
 class Library:
@@ -95,10 +97,6 @@ class Library:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('file', help = "enter library file", nargs=1)
-    #print(str(date.today()))
-    #print(repr(date.today()))
-    #print(str("Ala\n ma kota"))#nieformalna reprezentacja obiektu
-    #print(repr("Ala\n ma kota")) #formalna reprezentacja obiektu
     args = parser.parse_args()
     filename = args.file[0]
     library = Library(filename)

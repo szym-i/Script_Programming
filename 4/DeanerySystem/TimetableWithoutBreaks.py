@@ -44,25 +44,6 @@ class TimetableWithoutBreaks(object):
                    return False
         return True
 
-        if self.end_hour > 20:
-            return False
-        if self.end_hour == 20:
-            if self.end_minute != 0:
-                return False
-        if self.hour < 8:
-            return False
-        return True
-        if term.end_hour > 20:
-            return False
-        if term.end_hour == 20:
-            if term.end_minute != 0:
-                return False
-        if term.hour < 8:
-            return False
-        if self.busy(term):
-            return False
-        return True
-
     def busy(self, term: Term) -> bool:
         day, time = str(term).split()
         if day in days and time in times:
