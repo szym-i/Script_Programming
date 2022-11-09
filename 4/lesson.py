@@ -1,6 +1,5 @@
-from day import Day
-from term import Term
-import math
+from DeanerySystem.day import Day
+from DeanerySystem.term import *
 
 years = ["0","Pierwszy","Drugi","Trzeci","Czwarty"]
 full_time = ["zaocznych","stacjonarnych"]

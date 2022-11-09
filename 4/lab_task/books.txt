@@ -1,0 +1,4 @@
+Gwiezdne Wojny:2
+1984:0
+Symfonia C++:999
+a:1

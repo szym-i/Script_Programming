@@ -1,3 +1,4 @@
+from day import Day
 import math
 
 days = ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"]

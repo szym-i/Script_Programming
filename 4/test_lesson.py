@@ -1,5 +1,5 @@
-from day import Day
-from term import Term
+from DeanerySystem.day import Day
+from DeanerySystem.term import Term
 from lesson import Lesson
 import unittest
 
@@ -10,6 +10,7 @@ lesson4 = Lesson(Term(Day.SAT, 8, 5, 4), "Programowanie3", "Polak", 2)
 lesson5 = Lesson(Term(Day.SAT, 17, 0, 45), "Programowanie3", "Polak", 2)
 
 class Test_TestDeanerySystem(unittest.TestCase):
+    
     def test_earlierDay(self):
         self.assertFalse(lesson1.earlierDay())
         self.assertFalse(lesson2.earlierDay())

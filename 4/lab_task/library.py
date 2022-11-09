@@ -7,25 +7,17 @@ import os
 
 class Library:
     def __init__(self,filename,filename2="usr.txt"):
-        self.lib = {}
-        if filename != None:
-            self.read_lib(filename)
-        self.usr = self.read_usr(filename2)
-        self.filename2 = filename2
+        self.books = []
+        self.readers = []
 
     def __str__(self):
-        s = ""
-        for k,v in self.lib.items():
-            s+=k+':'+str(v)+"\n"
-        for k,v in self.usr.items():
-            s+=k+':'+str(v)+'\n'
-        return s
+        return '{self.books}\n{self.readers}'
 
     def borrow(self,book,name):
-        if book in self.lib.keys():
-            if self.lib.get(book) > 0:
-                self.lib[book] -=1
-                if name not in self.usr.keys():
+        #if book in self.lib.keys():
+         #   if self.lib.get(book) > 0:
+          #      self.lib[book] -=1
+           #     if name not in self.usr.keys():
                     self.usr[name] = [book]
                 elif name in self.usr.keys():
                     self.usr[name].append(book)
@@ -46,24 +38,24 @@ class Library:
             self.lib[book] +=1
             return "The book has been returned"
 
-    def parseFileLine(self,line):# przekształcenie linii pliku na struukturę danych
-        key, value = line.strip().split(':')
-        self.lib[key] = int(value)
+   # def parseFileLine(self,line):# przekształcenie linii pliku na struukturę danych
+    #    key, value = line.strip().split(':')
+     #   self.lib[key] = int(value)
 
-    def parseInputLine(self,line):# przekształcenie linii standardowego wejścia na strukturę danych
-        line = line.split()
-        if len(line) < 3:
-            print("[operation] [book's title] [name]")
-            return
-        op = line[0]
-        title = ' '.join(line[1:-1])
-        name = line[-1]
-        if op == "return":
-            return self.return_book(title,name)
-        elif op == "borrow":
-            return self.borrow(title,name)
-        else:
-            return "Use return/borrow operation"
+    #def parseInputLine(self,line):# przekształcenie linii standardowego wejścia na strukturę danych
+     #   line = line.split()
+      #  if len(line) < 3:
+   #         print("[operation] [book's title] [name]")
+    #        return
+     #   op = line[0]
+      #  title = ' '.join(line[1:-1])
+       # name = line[-1]
+        #if op == "return":
+       #     return self.return_book(title,name)
+        #elif op == "borrow":
+         #   return self.borrow(title,name)
+        #else:
+         #   return "Use return/borrow operation"
 
     def read_usr(self,filename):
         d = {}
