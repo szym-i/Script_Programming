@@ -2,7 +2,7 @@ from day import Day
 from term import Term,days
 import math
 
-times = ["8:00-9:30","9:30-11:00","11:00-12:30","12:30-14:00","14:00-15:30","15:30-17:00","17:00-18:30","18:30-20:00"]
+times = ["8:00-9:30","9:40-11:10","11:20-12:50","13:00-14:30","14:40-16:10","16:20-17:50","18:00-19:30","19:40-21:10"]
 years = ["0","Pierwszy","Drugi","Trzeci","Czwarty"]
 full_time = ["zaocznych","stacjonarnych"]
 
@@ -98,10 +98,14 @@ class Lesson:
             return True
         return False
 
-    def laterTime(self):
-        start_hour = (self.term.hour + (self.term.duration+self.term.minute)//60)%24
-        start_minute = (self.term.minute + self.term.duration%60)%60
-        possible_term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
+    def laterTime(self, skipBreaks = False):
+        break_duration = 0
+        if skipBreaks:
+            break_duration = 10
+        start_hour = (self.term.hour + (self.term.duration+self.term.minute+break_duration)//60)%24
+        start_minute = (self.term.minute + self.term.duration%60 + break_duration)%60
+        possible_term = Term(self.term.day,start_hour,start_minute,self.term.duration)
+        print(possible_term)
         if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
             day, time = str(self.term).split()
             t = times.index(time)
@@ -114,9 +118,12 @@ class Lesson:
             return True
         return False
 
-    def earlierTime(self):
-        start_hour = self.term.hour - math.ceil((self.term.duration - self.term.minute)/60)
-        start_minute = (self.term.minute-self.term.duration)%60
+    def earlierTime(self, skipBreaks = False):
+        break_duration = 0
+        if skipBreaks:
+            break_duration = 10
+        start_hour = self.term.hour - math.ceil((self.term.duration - self.term.minute-break_duration)/60)
+        start_minute = (self.term.minute-self.term.duration-break_duration)%60
         possible_term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
         if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
             day, time = str(self.term).split()
