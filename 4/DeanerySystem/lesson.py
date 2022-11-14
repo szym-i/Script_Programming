@@ -25,7 +25,6 @@ class Lesson:
     def timetable(self,var):
         self.__timetable = var
 
-
     @property
     def term(self):
         return self.__term
@@ -65,7 +64,6 @@ class Lesson:
     @fullTime.setter
     def fullTime(self,var):
         self.__fullTime = var
-
 
     def __str__(self):
         return f'{self.name}'

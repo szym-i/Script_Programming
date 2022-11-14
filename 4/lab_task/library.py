@@ -24,7 +24,7 @@ class Library:
         for b in self.__books:
             if b.reader_pesel != '':
                 r = self.find_reader(b.reader_pesel)
-                s += f'{b.title:^16} {str(b.borrow_date):^20} {r.name:^14} {r.surname:^20}'
+                s += f'{b.title:^16} {str(b.borrow_date):^20} {r.name:^14} {r.surname:^20}\n'
         return s
 
     @property
@@ -35,14 +35,14 @@ class Library:
     def books(self):
         s="BID:        TITLE:                AUTHORS:                   BORROW_DATE:                RETURN_DATE:            READER_PESEL:\n"
         for b in self.__books:
-            s+=repr(b)+'\n'
+            s+=f'{b.bid:^3} {b.title:^20} {",".join(map(str,b.authors)):^25} {str(b.borrow_date):^30} {str(b.return_date):^30} {b.reader_pesel:^11}\n'
         return s
 
     @property
     def readers(self):
         s = " NAME:               SURNAME:          PESEL:\n"
         for r in self.__readers:
-            s+=repr(r)+'\n'
+            s+=f'{r.name:14} {r.surname:^20} {r.pesel:^11}\n'
         return s
 
     @property
@@ -81,7 +81,6 @@ class Library:
         f2.close()
 
     def parseFileLine(self,line, op):# przekształcenie linii pliku na strukturę danych
-        print(line)
         args = line.strip().split(';')
         if op == "books":
             try:
@@ -151,19 +150,19 @@ if __name__ == '__main__':
         while not pesel_pattern.match(pesel):
             pesel = input("Enter your pesel (11-digits):").strip()
         reader = Reader(name,surname,pesel)
-        print(reader)
         if reader in library.readers_list:
-            print(f"Welcome back {reader.name}")
+            print(f"Welcome back {reader}")
         else:
             if pesel in library.pesele:
                 print("Podszywasz się pod kogoś lub wprowadziłeś niepoprawne dane")
                 exit() 
             else:
-                print("Creating reader profile for new user...")
+                print("Creating reader profile for {reader}")
                 library.add(reader)
         while True:
             print(library.parseInputLine(reader))
     except EOFError:
         print("End state")
-        #print(library)
+        print(library)
+        print(library.books)
         library.save()

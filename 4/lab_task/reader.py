@@ -12,7 +12,7 @@ class Reader:
         return f'{self.__name} {self.__surname}'
 
     def __repr__(self):
-        return f'{self.__name:14} {self.__surname:^20} {self.__pesel:^11}' 
+        return f'{self.__name} {self.__surname} {self.__pesel}' 
 
     def __eq__(self, other):
         if self.__name == other.name and self.__surname == other.surname and self.__pesel==other.pesel:
@@ -27,7 +27,7 @@ class Reader:
     def __sub__(self, book: Book):
         book.reader_pesel = ''
         book.return_date = datetime.now()
-        print(f"Czas wypożyczenia: {book.return_date-book.borrow_date}")
+        print(f"\033[93m Czas wypożyczenia: {book.return_date-book.borrow_date} \033[0m")
         book.borrow_date = ''
 
     @property

@@ -50,6 +50,10 @@ class Book:
         return self.__authors
 
     @property
+    def bid(self):
+        return self.__bid
+
+    @property
     def fileformat(self):
         return f'{self.title};{",".join(map(str,self.__authors))};{self.borrow_date};{self.return_date};{self.reader_pesel}'
     
@@ -57,12 +61,12 @@ class Book:
         return f'{str(self.__bid)} "{self.__title}" {",".join(map(str,self.__authors))}'
 
     def __repr__(self):
-        return f'{self.__bid:^3} {self.__title:^20} {",".join(map(str,self.__authors)):^25} {str(self.__borrow_date):^30} {str(self.__return_date):^30} {self.__reader_pesel:^11}'
+        return f'{self.__bid} {self.__title} {",".join(map(str,self.__authors))} {str(self.__borrow_date)} {str(self.__return_date)} {self.__reader_pesel}'
 
-if __name__ == '__main__':
-    args = "1984;George Orwell;2022-11-13 14:45:31.261705;;1".split(';')
-    print(args)
-    book1 = Book(*args)
-    print(repr(book1))
-    #dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    #print(dt_string)
+    def __del__(self):
+        Book.number_of_books-=1
+
+    def __eq__(self, other):
+        if self.__title == other.title and self.__authors == other.authors and self.__borrow_date == other.borrow_date and self.__return_date == other.return_date:
+            return True
+        return False
