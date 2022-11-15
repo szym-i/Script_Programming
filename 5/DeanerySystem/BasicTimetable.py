@@ -7,6 +7,7 @@ from lesson import Lesson
 from action import Action
 from term import BasicTerm,Term
 from Break import Break
+from sortedcontainers import SortedDict
 
 
 def generateTerms(breaks: List[Break]):
@@ -50,12 +51,8 @@ class BasicTimetable(ABC):
         pass
 
     def get(self, term: Term) -> Lesson:
-        day, time = str(term).split()
-        if day in days and time in times:
-            t = times.index(time)
-            d = days.index(day)
-            if self.table[t][d][0] != ' ':
-                return self.table[t][d][0]
+        if hash(term) in self.table.keys():
+            return self.table[hash(term)]
         return None
     
     def parse(self, actions: List[str]) -> List[Action]:
@@ -68,10 +65,10 @@ class BasicTimetable(ABC):
         return result
 
     def perform(self, actions: List[Action]):
-        if self.number_of_lessons == 0:
+        if len(self.table) == 0:
             raise ZeroDivisionError
         for i in range(1,len(actions)+1):
-            l = self.find_nth_lesson((i-1)%self.number_of_lessons)
+            l = self.find_nth_lesson((i-1)%len(self.table))
             if actions[i-1] == Action("d+"):
                 l.laterDay(self.skipBreaks)
             if actions[i-1] == Action("d-"):
@@ -82,28 +79,18 @@ class BasicTimetable(ABC):
                 l.earlierTime(self.skipBreaks)
     
     def put(self, lesson: Lesson) -> bool:
-        day, time = str(lesson.term).split()
-        if day in days and time in times:
-            t = times.index(time)
-            d = days.index(day)
-            if self.table[t][d][0] == ' ':
-                self.table[t][d].pop()
-                self.table[t][d].append(lesson)
-                self.number_of_lessons+=1
-                return True
-            return "The lesson cannot be placed if the timetable is already occupied"
-        return "The lesson term is incorrect"
+        self.table[hash(lesson.term)] = lesson
+        self.table = { k: v for k,v in sorted(self.table.items())}
+        return True
 
     def find_nth_lesson(self,n):
         if n < 0:
             return f"Use n >= 0 {n}"
         x = 0
-        for i in self.table:
-            for j in i:
-                if j[0] != ' ':
-                    if x == n:
-                        return j[0]
-                    x+=1
+        for l in self.table.values():
+            if x == n:
+                return l
+            x+=1
 
 class Timetable(BasicTimetable):
     def parse(self, actions):

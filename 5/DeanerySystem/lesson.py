@@ -70,15 +70,13 @@ class Lesson:
     def __str__(self):
         return f'{self.name}'
 
+    def __repr__(self):
+        return f'{self.name} {self.term}'
+
     def laterDay(self,skipBreaks):
         possible_term = Term(Day((self.term.day_value+1)%7),self.term.hour,self.term.minute,self.term.duration)
         if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
-            day, time = str(self.term).split()
-            t = times.index(time)
-            d = days.index(day)
-            self.timetable.table[t][d].pop()
-            self.timetable.table[t][d].append(' ')
-            self.timetable.number_of_lessons-=1
+            self.timetable.table.pop(hash(self.term))
             self.term.day = Day((self.term.day_value+1)%7)
             self.timetable.put(self)
             return True
@@ -105,14 +103,8 @@ class Lesson:
         start_hour = (self.term.hour + (self.term.duration+self.term.minute+break_duration)//60)%24
         start_minute = (self.term.minute + self.term.duration%60 + break_duration)%60
         possible_term = Term(self.term.day,start_hour,start_minute,self.term.duration)
-        print(possible_term)
         if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
-            day, time = str(self.term).split()
-            t = times.index(time)
-            d = days.index(day)
-            self.timetable.table[t][d].pop()
-            self.timetable.table[t][d].append(' ')
-            self.timetable.number_of_lessons-=1
+            self.timetable.table.pop(hash(self.term))
             self.term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
             self.timetable.put(self)
             return True
@@ -125,12 +117,7 @@ class Lesson:
             start_minute = (self.term.minute-self.term.duration-break_duration)%60
             possible_term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
             if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
-                day, time = str(self.term).split()
-                t = times.index(time)
-                d = days.index(day)
-                self.timetable.table[t][d].pop()
-                self.timetable.table[t][d].append(' ')
-                self.timetable.number_of_lessons-=1
+                self.timetable.table.pop(hash(self.term))
                 self.term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
                 self.timetable.put(self)
                 return True
