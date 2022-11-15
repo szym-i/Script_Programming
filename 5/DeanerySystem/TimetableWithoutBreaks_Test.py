@@ -1,6 +1,6 @@
-from TimetableWithBreaks import *
+from TimetableWithoutBreaks import *
+from BasicTimetable import BasicTimetable
 import unittest
-from Break import Break
 
 less1 = Lesson(None,Term(Day.MON,8,0),"Fizyka","",2)
 less2 = Lesson(None,Term(Day.WED,18,30),"Skryptowe","",2)
@@ -10,7 +10,7 @@ less4 = Lesson(None,Term(Day.SUN,21,30),"AaAA","",1)
 class Test_TestTable(unittest.TestCase):
 
     def test_busy(self):
-        tt = TimetableWithBreaks(breaks)
+        tt = TimetableWithoutBreaks()
         tt.table[0][0].pop()
         tt.table[0][0].append(less1) 
         term1 = Term(Day.MON,8,0)
@@ -21,7 +21,7 @@ class Test_TestTable(unittest.TestCase):
         self.assertEqual(tt.busy(term3),False)
 
     def test_can_be_transferred(self):
-        tt = TimetableWithBreaks(breaks)
+        tt = TimetableWithoutBreaks()
         tt.put(less1) 
         term1 = Term(Day.MON,11,0)
         term2 = Term(Day.MON,12,30)
@@ -32,13 +32,13 @@ class Test_TestTable(unittest.TestCase):
         self.assertEqual(tt.can_be_transferred_to(term3,False),True)
     
     def test_put(self):
-        tt = TimetableWithBreaks(breaks)
+        tt = TimetableWithoutBreaks()
         self.assertEqual(tt.put(less1),True)
         self.assertEqual(tt.put(less2),True)
         self.assertEqual(tt.put(less3),True)
     
     def test_get(self):
-        tt = TimetableWithBreaks(breaks)
+        tt = TimetableWithoutBreaks()
         tt.put(less1)
         tt.put(less2)
         tt.put(less3)
@@ -48,20 +48,16 @@ class Test_TestTable(unittest.TestCase):
         self.assertEqual(tt.get(less4.term),None)
     
     def test_parse(self):
-        tt = TimetableWithBreaks(breaks)
+        tt = TimetableWithoutBreaks()
         s1 = ["d+",123,"df","t+"]
         res1 = [Action.DAY_LATER,Action.TIME_LATER]
         s2 = ["d+","d-","df","t-","t+"]
         res2 = [Action.DAY_LATER,Action.DAY_EARLIER,Action.TIME_EARLIER,Action.TIME_LATER]
-        #self.assertRaises(ValueError,tt.parse(s1))
-        #self.assertRaises(ValueError,tt.parse(s2))
-        with self.assertRaises(ValueError) as context:
-            tt.parse(s1)
-        print(str(context.exception))
-        self.assertTrue('ValueError: 123 is not a valid Action' in str(context.exception))
+        self.assertEqual(tt.parse(s1),res1)
+        self.assertEqual(tt.parse(s2),res2)
     
     def test_perform(self):
-        tt = TimetableWithBreaks(breaks)
+        tt = TimetableWithoutBreaks()
         less1 = Lesson(tt,Term(Day.MON,12,30),"Fizyka","",1)
         less2 = Lesson(tt,Term(Day.WED,18,30),"Skryptowe","",1)
         res1 = [Action.DAY_LATER,Action.TIME_LATER,Action.DAY_LATER,Action.TIME_EARLIER]
@@ -72,7 +68,7 @@ class Test_TestTable(unittest.TestCase):
         self.assertEqual(str(tt),str(newtable))
     
     def test_str(self):
-        tt = TimetableWithBreaks(breaks)
+        tt = TimetableWithoutBreaks()
         less1 = Lesson(tt,Term(Day.MON,8,0),"Fizyka","",1)
         less2 = Lesson(tt,Term(Day.WED,8,0),"Skryptowe","",1)
         less3 = Lesson(tt,Term(Day.WED,9,30),"Kryptografia","",1)

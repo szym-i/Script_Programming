@@ -3,14 +3,85 @@ import math
 
 days = ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"]
 
-class Term:
-    def __init__(self, day, hour, minute, duration = 90):
-        self.__day = day
+class BasicTerm:
+    def __init__(self,hour,minute,duration=90):
         self.__hour = hour
         self.__minute = minute
-        self.__end_hour = (hour + (duration + minute)//60)%24
-        self.__end_minute = (minute + duration%60)%60
         self.__duration = duration
+    
+    def __str__(self):
+        return f"{self.hour}:{self.minute} [{self.duration}]"
+    
+    def __lt__(self,term):
+        return self.earlierThan(term)
+    
+    def __gt__(self,term):
+        return self.laterThan(term)
+    
+    def __le__(self,term):
+        return self.earlierThan(term) or self.equals(term)
+    
+    def __ge__(self,term):
+        return self.laterThan(term) or self.equals(term)
+    
+    def earlierThan(self,term):
+        if self.hour < term.hour:
+            return True
+        elif self.hour == term.hour:
+            if self.minute < term.minute:
+                return True
+        return False
+    
+    def laterThan(self,term):
+        if not self.earlierThan(term) and not self.equals(term):
+            return True
+        return False
+    
+    def equals(self,term):
+        if self.hour == term.hour and self.minute == term.minute:
+            return True
+        return False
+    
+    @property
+    def duration(self):
+        return self.__duration
+
+
+    @property
+    def end_hour(self):
+        end_hour = (self.hour + (self.duration + self.minute)//60)%24
+        return end_hour
+
+    @property
+    def end_minute(self):
+        end_minute = (self.minute + self.duration%60)%60
+        return int(end_minute)
+
+    @property
+    def hour(self):
+        return int(self.__hour)
+    
+    @hour.setter
+    def hour(self,val):
+        self.__hour = val
+
+    @property
+    def minute(self):
+        return self.__minute
+
+    @minute.setter
+    def minute(self,var):
+        self.__minute = var
+
+
+class Term(BasicTerm):
+
+    def __init__(self,day,hour,minute,duration=90):
+        super().__init__(hour,minute,duration)
+        self.__day = day
+    
+    def __hash__(self):
+        return 60*self.hour + self.minute + 24*60*self.day.value
 
     @property
     def day(self):
@@ -24,33 +95,8 @@ class Term:
     def day(self,var):
         self.__day = var
 
-    @property
-    def hour(self):
-        return self.__hour
-
-    @hour.setter
-    def hour(self,var):
-        self.__hour = var
-
-    @property
-    def minute(self):
-        return self.__minute
-
-    @minute.setter
-    def minute(self,var):
-        self.__minute = var
-
-    @property
-    def end_hour(self):
-        return self.__end_hour
-
-    @property
-    def end_minute(self):
-        return self.__end_minute
-    
-    @property
-    def duration(self):
-        return self.__duration
+    def __repr__(self):
+        return str(hash(self))
 
     def __str__(self):
         if self.minute < 10 and self.end_minute < 10:
@@ -109,3 +155,11 @@ class Term:
         if self.hour < 8:
             return False
         return True
+
+
+if __name__ == '__main__':
+    term1 = Term(Day.MON,8,10)
+    d ={}
+    for i in range(hash(term1),hash(term1)+term1.duration+1):
+        d[i] = term1
+    print(d)

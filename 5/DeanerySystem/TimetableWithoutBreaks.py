@@ -1,18 +1,17 @@
 from typing import List
-from day import Day,days
-from term import Term,days,BasicTerm
+from day import Day
+from term import Term,days
 from lesson import Lesson
 from action import Action
-from Break import Break
-from BasicTimetable import BasicTimetable, generateTerms, breaks, times
+from BasicTimetable import BasicTimetable
 
 
-class TimetableWithBreaks(BasicTimetable):
-    def __init__(self, breaks: List[Break]):
+times = ["8:00-9:30","9:30-11:00","11:00-12:30","12:30-14:00","14:00-15:30","15:30-17:00","17:00-18:30","18:30-20:00"]
+
+class TimetableWithoutBreaks(BasicTimetable):
+    def __init__(self):
         self.table = [[ [' '] for x in range(7)] for y in range(8)]
         self.number_of_lessons = 0
-        self.breaks = breaks
-        self.skipBreaks = True
 
     def __str__(self):
         s = ""
@@ -21,10 +20,8 @@ class TimetableWithBreaks(BasicTimetable):
         for i in range(0,7):
             s+=f"*{days[i]:^12}"
         s+="*\n"
-        for i in range(0, 7):
+        for i in range(0, 8):
             s+=f'{105*"*"}\n*{times[i]:^12}*{str(self.table[i][0][0]):^12}*{str(self.table[i][1][0]):^12}*{str(self.table[i][2][0]):^12}*{str(self.table[i][3][0]):^12}*{str(self.table[i][4][0]):^12}*{str(self.table[i][5][0]):^12}*{str(self.table[i][6][0]):^12}*\n'
-            s+=f"*{104*'*'}\n*{str(self.breaks[i].getTerm()):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*\n"
-        s+=f'{105*"*"}\n*{times[7]:^12}*{str(self.table[7][0][0]):^12}*{str(self.table[7][1][0]):^12}*{str(self.table[7][2][0]):^12}*{str(self.table[7][3][0]):^12}*{str(self.table[7][4][0]):^12}*{str(self.table[7][5][0]):^12}*{str(self.table[7][6][0]):^12}*\n'
         s+=f"{105*'*'}"
         return s
 
@@ -54,15 +51,16 @@ class TimetableWithBreaks(BasicTimetable):
             t = times.index(time)
             d = days.index(day)
             if self.table[t][d][0] != ' ':
-                raise ValueError("Term is busy!")
+                return True
         return False
 
 if __name__ == '__main__':
-    s = "t+ t+ t+" 
-    tt = TimetableWithBreaks(breaks, True)
+    s = "t- t- t- t-"
+    tt = TimetableWithoutBreaks()
     lesson = Lesson(tt,Term(Day.THU,8,0),"Trzeci","Stanisław Polak",2)
     lesson1 = Lesson(tt,Term(Day.WED,8,0),"Drugi","Stanisław Polak",2)
-    lesson3 = Lesson(tt,Term(Day.FRI,8,0),"Pierwszy","Stanisław Polak",2)
+    lesson3 = Lesson(tt,Term(Day.WED,9,30),"Pierwszy","Stanisław Polak",2)
+    print(tt)
     actions = tt.parse(s.split())
     tt.perform(actions)
-    print(tt)
+    #print(tt)

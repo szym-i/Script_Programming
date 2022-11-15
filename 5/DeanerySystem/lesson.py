@@ -1,5 +1,5 @@
-from day import Day
-from term import Term,days
+from term import Term
+from day import Day, days
 import math
 
 times = ["8:00-9:30","9:40-11:10","11:20-12:50","13:00-14:30","14:40-16:10","16:20-17:50","18:00-19:30","19:40-21:10"]
@@ -70,7 +70,7 @@ class Lesson:
     def __str__(self):
         return f'{self.name}'
 
-    def laterDay(self):
+    def laterDay(self,skipBreaks):
         possible_term = Term(Day((self.term.day_value+1)%7),self.term.hour,self.term.minute,self.term.duration)
         if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
             day, time = str(self.term).split()
@@ -84,7 +84,7 @@ class Lesson:
             return True
         return False
     
-    def earlierDay(self):
+    def earlierDay(self,skipBreaks):
         possible_term = Term(Day((self.term.day_value-1)%7),self.term.hour,self.term.minute,self.term.duration)
         if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
             day, time = str(self.term).split()
@@ -121,18 +121,33 @@ class Lesson:
     def earlierTime(self, skipBreaks = False):
         break_duration = 0
         if skipBreaks:
-            break_duration = 10
-        start_hour = self.term.hour - math.ceil((self.term.duration - self.term.minute-break_duration)/60)
-        start_minute = (self.term.minute-self.term.duration-break_duration)%60
-        possible_term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
-        if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
+            start_hour = self.term.hour - math.ceil((self.term.duration - self.term.minute-break_duration)/60)
+            start_minute = (self.term.minute-self.term.duration-break_duration)%60
+            possible_term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
+            if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
+                day, time = str(self.term).split()
+                t = times.index(time)
+                d = days.index(day)
+                self.timetable.table[t][d].pop()
+                self.timetable.table[t][d].append(' ')
+                self.timetable.number_of_lessons-=1
+                self.term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
+                self.timetable.put(self)
+                return True
+            return False
+        else:
             day, time = str(self.term).split()
             t = times.index(time)
             d = days.index(day)
-            self.timetable.table[t][d].pop()
-            self.timetable.table[t][d].append(' ')
-            self.timetable.number_of_lessons-=1
-            self.term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
-            self.timetable.put(self)
-            return True
-        return False
+            break_duration = 10
+            start_hour = self.term.hour - math.ceil((self.term.duration - self.term.minute-break_duration)/60)
+            start_minute = (self.term.minute-self.term.duration-break_duration)%60
+            possible_term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
+            if self.timetable.can_be_transferred_to(possible_term,self.fullTime):
+                self.timetable.table[t][d].pop()
+                self.timetable.table[t][d].append(' ')
+                self.timetable.number_of_lessons-=1
+                self.term = Term(self.term.day,start_hour,start_minute,self.term.duration) 
+                self.timetable.put(self)
+                return True
+            return False
