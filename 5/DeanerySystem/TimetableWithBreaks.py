@@ -4,7 +4,7 @@ from term import Term,days,BasicTerm
 from lesson import Lesson
 from action import Action
 from Break import Break
-from BasicTimetable import BasicTimetable, generateTerms, breaks, times
+from BasicTimetable import BasicTimetable, generateTerms, breaks, times, NotEnoughLessonsError, FullTimeStudentError
 
 class TimetableWithBreaks(BasicTimetable):
     def __init__(self, breaks: List[Break], skipBreaks=True):
@@ -36,17 +36,16 @@ class TimetableWithBreaks(BasicTimetable):
         return s
 
     def can_be_transferred_to(self, term: Term, fullTime: bool) -> bool:
-        if self.busy(term):
-            return False
+        self.busy(term) #jeśli będzie busy, wywali wyjątek
         if fullTime:
             if term.day_value > 4 or term.hour < 8 or term.end_hour > 20:
-                return False
+                raise FullTimeStudentError("Fulltime student need to drink beer during weekend")
             if term.day_value == 4 and term.hour > 7:
                 if term.end_hour > 17:
-                    return False
+                    raise FullTimeStudentError("Fulltime student need to drink beer during weekend")
                 elif term.end_hour == 17:
                     if term.end_minute != 0:
-                        return False
+                        raise FullTimeStudentError("Fulltime student need to drink beer during weekend")
         else:
            if term.day_value < 4 or term.end_hour < 8 or term.end_hour > 20:
                return False
@@ -67,11 +66,10 @@ class TimetableWithBreaks(BasicTimetable):
         return False
 
 if __name__ == '__main__':
-    s = "d+ t+ da"  
+    s = "d+ d+ d+ d+ d+ d+"  
     tt = TimetableWithBreaks(breaks, True)
-    lesson = Lesson(tt,Term(Day.MON,8,0),"PS","Stanisław Polak",2)
-    lesson1 = Lesson(tt,Term(Day.MON,9,40),"Krypto","Stanisław Polak",2)
-    lesson3 = Lesson(tt,Term(Day.FRI,8,0),"PS [W]","Stanisław Polak",2)
+    lesson = Lesson(tt,Term(Day.MON,8,0,30),"PS","Stanisław Polak",2)
+    #lesson1 = Lesson(tt,Term(Day.MON,8,30,60),"Krypto","Stanisław Polak",2)
     actions = tt.parse(s.split())
     tt.perform(actions)
     print(tt)

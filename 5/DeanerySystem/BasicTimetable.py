@@ -10,6 +10,14 @@ from Break import Break
 from sortedcontainers import SortedDict
 
 
+class NotEnoughLessonsError(Exception):
+    pass
+
+
+class FullTimeStudentError(Exception):
+    pass
+
+
 def generateTerms(breaks: List[Break]):
     if len(breaks) != 7:
         return "Enter exactly 7 breaks" 
@@ -66,7 +74,7 @@ class BasicTimetable(ABC):
 
     def perform(self, actions: List[Action]):
         if len(self.table) == 0:
-            raise ZeroDivisionError
+            raise NotEnoughLessonsError("Add some lessons to perform actions!")
         for i in range(1,len(actions)+1):
             l = self.find_nth_lesson((i-1)%len(self.table))
             if actions[i-1] == Action("d+"):

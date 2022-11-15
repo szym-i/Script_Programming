@@ -27,10 +27,14 @@ class Test_TimeTable(unittest.TestCase):
         term1 = Term(Day.MON,8,0)
         term2 = Term(Day.WED,8,0)
         term3 = Term(Day.SAT,8,0)
+        weekend_term = Term(Day.SUN,16,0)
         with self.assertRaises(ValueError):
-            tt.can_be_transferred_to(term1,True)
+            tt.can_be_transferred_to(term1,True) # True - lesson is fulltime
         with self.assertRaises(ValueError):
             tt.can_be_transferred_to(term1,False)
+        with self.assertRaises(FullTimeStudentError): # own exception
+            tt.can_be_transferred_to(weekend_term,True)
+        self.assertEqual(tt.can_be_transferred_to(weekend_term,False),True)
         self.assertEqual(tt.can_be_transferred_to(term2,True),True)
         self.assertEqual(tt.can_be_transferred_to(term3,False),True)
     
@@ -64,7 +68,7 @@ class Test_TimeTable(unittest.TestCase):
     def test_perform(self):
         tt = TimetableWithBreaks(breaks)
         act = [Action.DAY_LATER,Action.TIME_LATER,Action.DAY_LATER,Action.TIME_EARLIER]
-        with self.assertRaises(ZeroDivisionError):
+        with self.assertRaises(NotEnoughLessonsError):
             tt.perform(act)
         less1 = Lesson(tt,Term(Day.MON,8,0),"Fizyka","",1)
         less2 = Lesson(tt,Term(Day.WED,9,40),"Skryptowe","",1)
