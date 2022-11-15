@@ -66,10 +66,10 @@ class TimetableWithBreaks(BasicTimetable):
         return False
 
 if __name__ == '__main__':
-    s = "d+ d+ d+ d+ d+ d+"  
+    s = ""  
     tt = TimetableWithBreaks(breaks, True)
     lesson = Lesson(tt,Term(Day.MON,8,0,30),"PS","Stanisław Polak",2)
-    #lesson1 = Lesson(tt,Term(Day.MON,8,30,60),"Krypto","Stanisław Polak",2)
+    lesson1 = Lesson(tt,Term(Day.MON,8,30,60),"Krypto","Stanisław Polak",2)
     actions = tt.parse(s.split())
     tt.perform(actions)
     print(tt)

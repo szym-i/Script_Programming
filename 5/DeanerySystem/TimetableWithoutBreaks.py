@@ -55,7 +55,7 @@ class TimetableWithoutBreaks(BasicTimetable):
         return False
 
 if __name__ == '__main__':
-    s = "t- t- t- t-"
+    s = ""
     tt = TimetableWithoutBreaks()
     lesson = Lesson(tt,Term(Day.THU,8,0),"Trzeci","Stanisław Polak",2)
     lesson1 = Lesson(tt,Term(Day.WED,8,0),"Drugi","Stanisław Polak",2)
