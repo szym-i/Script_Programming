@@ -17,9 +17,12 @@ class TimetableWithBreaks(BasicTimetable):
         table = [[ [' '] for x in range(7)] for y in range(8)]
         for k,v in self.table.items():
             d = k//1440
-            t = k%1440//100-5
-            table[d][t].pop()
-            table[d][t].append(v)
+            t = (k%1440-480)//100
+            if table[t][d] == [' ']:
+                table[t][d].pop()
+                table[t][d].append(v)
+            else:
+                table[t][d].append(v)
         s = ""
         s+=f"{105*'*'}\n"
         s+=f"*{' '*11} "
@@ -27,9 +30,8 @@ class TimetableWithBreaks(BasicTimetable):
             s+=f"*{days[i]:^12}"
         s+="*\n"
         for i in range(0, 7):
-            s+=f'{105*"*"}\n*{times[i]:^12}*{str(table[i][0][0]):^12}*{str(table[i][1][0]):^12}*{str(table[i][2][0]):^12}*{str(table[i][3][0]):^12}*{str(table[i][4][0]):^12}*{str(table[i][5][0]):^12}*{str(table[i][6][0]):^12}*\n'
+            s+=f'{105*"*"}\n*{times[i]:^12}*{str(",".join(map(str,table[i][0]))):^12}*{str(",".join(map(str,table[i][1]))):^12}*{str(",".join(map(str,table[i][2]))):^12}*{str(",".join(map(str,table[i][3]))):^12}*{str(",".join(map(str,table[i][4]))):^12}*{str(",".join(map(str,table[i][5]))):^12}*{str(",".join(map(str,table[i][6]))):^12}*\n'
             s+=f"*{104*'*'}\n*{str(self.breaks[i].getTerm()):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*{str(breaks[i]):^12}*\n"
-        #s+=f'{105*"*"}\n*{times[7]:^12}*{str(self.table[7][0][0]):^12}*{str(self.table[7][1][0]):^12}*{str(self.table[7][2][0]):^12}*{str(self.table[7][3][0]):^12}*{str(self.table[7][4][0]):^12}*{str(self.table[7][5][0]):^12}*{str(self.table[7][6][0]):^12}*\n'
         s+=f"{105*'*'}"
         return s
 
@@ -65,12 +67,11 @@ class TimetableWithBreaks(BasicTimetable):
         return False
 
 if __name__ == '__main__':
-    s = "t+" 
-    tt = TimetableWithBreaks(breaks)
-    lesson = Lesson(tt,Term(Day.MON,8,0),"Trzeci","Stanisław Polak",2)
-    lesson1 = Lesson(tt,Term(Day.WED,9,40),"Drugi","Stanisław Polak",2)
-    lesson3 = Lesson(tt,Term(Day.FRI,8,0),"Pierwszy","Stanisław Polak",2)
-    print(tt.table)
+    s = "d+ t+ da"  
+    tt = TimetableWithBreaks(breaks, True)
+    lesson = Lesson(tt,Term(Day.MON,8,0),"PS","Stanisław Polak",2)
+    lesson1 = Lesson(tt,Term(Day.MON,9,40),"Krypto","Stanisław Polak",2)
+    lesson3 = Lesson(tt,Term(Day.FRI,8,0),"PS [W]","Stanisław Polak",2)
     actions = tt.parse(s.split())
     tt.perform(actions)
     print(tt)

@@ -41,7 +41,7 @@ def generateTerms(breaks: List[Break]):
         terms.append(f'{sh}:{sm}-{eh}:{em}')
     return terms
 
-breaks = [Break(9,30,10), Break(11,10,10), Break(12,50,10), Break(14,30,10), Break(16,10,10), Break(17,50,10), Break(19,30,10)]
+breaks = [Break(9,30,10), Break(11,10,10), Break(12,50,10), Break(14,30,10), Break(16,10,10), Break(17,50,10), Break(19,20,10)]
 times = generateTerms(breaks)
 
 
