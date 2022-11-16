@@ -48,10 +48,10 @@ class TimetableWithBreaks(BasicTimetable):
                         raise FullTimeStudentError("Fulltime student need to drink beer during weekend")
         else:
            if term.day_value < 4 or term.end_hour < 8 or term.end_hour > 20:
-               return False
+               raise ValueError("non-fulltime students can't have lessons during weekdays")
            if term.day_value == 4:
                if term.hour < 17:
-                   return False
+                   raise ValueError("non-fulltime students can't have lessons during weekdays")
         return True
 
     def busy(self, term: Term) -> bool:
@@ -63,6 +63,8 @@ class TimetableWithBreaks(BasicTimetable):
                 raise ValueError("Term is busy!")
             if k > h and h + term.duration > k:
                 raise ValueError("Term is busy!")
+            if k > h and h+ term.duration < k:
+                break
         return False
 
 if __name__ == '__main__':
