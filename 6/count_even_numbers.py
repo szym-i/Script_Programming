@@ -5,9 +5,8 @@ if __name__ == '__main__':
     for i in range(1,len(sys.argv)):
         try:
             file = open(sys.argv[i], "r")
-            number = ""
-            a = file.read().split()
-            for number in a:
+            dane = file.read().split()
+            for number in dane:
                 if int(number) % 2 == 0:
                     odd += 1
             file.close()
