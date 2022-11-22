@@ -4,11 +4,12 @@ from datetime import date
 from datetime import datetime
 import argparse
 import os
-from reader import Reader
-from book import Book
+from reader import Person, Reader, Shopper
+from book import LibraryBook, ShopBook, BasicBook
 import re
 
 class Library:
+
     def __init__(self,bf,rf="readers.txt"):
         self.__books = []
         if bf != None:
@@ -31,11 +32,17 @@ class Library:
     def pesele(self):
         return [e.pesel for e in self.__readers ]
 
+    #@property
+    #def books(self):
+    #    s="BID:        TITLE:                AUTHORS:                   BORROW_DATE:                RETURN_DATE:            READER_PESEL:\n"
+    #    for b in self.__books:
+    #        s+=f'{b.bid:^3} {b.title:^20} {",".join(map(str,b.authors)):^25} {str(b.borrow_date):^30} {str(b.return_date):^30} {b.reader_pesel:^11}\n'
+    #    return s
     @property
     def books(self):
-        s="BID:        TITLE:                AUTHORS:                   BORROW_DATE:                RETURN_DATE:            READER_PESEL:\n"
-        for b in self.__books:
-            s+=f'{b.bid:^3} {b.title:^20} {",".join(map(str,b.authors)):^25} {str(b.borrow_date):^30} {str(b.return_date):^30} {b.reader_pesel:^11}\n'
+        s = ""
+        for e in self.__books:
+            s+=str(e)+'\n'
         return s
 
     @property
@@ -91,7 +98,7 @@ class Library:
         args = line.strip().split(';')
         if op == "books":
             try:
-                return Book(*args)
+                return LibraryBook(*args)
             except:
                 print("Converting books file line file went wrong")
         if op == "readers":
@@ -173,6 +180,5 @@ if __name__ == '__main__':
             print(library.parseInputLine(reader))
     except EOFError:
         print("End state")
-        print(library)
         print(library.books)
         library.save()
