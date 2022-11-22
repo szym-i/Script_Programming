@@ -33,6 +33,10 @@ class Library:
         return s
 
     @property
+    def revenue(self):
+        print(f"Total revenue: {ShopBook.revenue}")
+
+    @property
     def pesele(self):
         return [e.pesel for e in self.__readers ]
 
@@ -162,7 +166,7 @@ if __name__ == '__main__':
     print(library)
     print(library.library_books)
     print(library.readers)
-    print("Welcome in my library, use Ctrl+D to stop")
+    print(library.revenue)
     try:
         name = input("Enter your name:").strip()
         surname = input("Enter your surname:").strip()

@@ -96,12 +96,12 @@ class LibraryBook(BasicBook):
 class ShopBook(BasicBook):
 
     revenue = 0
-    def __init__(self,title: str, authors, price: int, quantity: int, history = ""):
+    def __init__(self,title: str, authors, price: int, quantity: int, sold = 0, history = ""):
         super().__init__(title,authors)
-        if price > 0 and quantity >= 0:
-            self.__price = price
-            self.__quantity = quantity
-            self.__sold = 0
+        if int(price) > 0 and int(quantity) >= 0:
+            self.__price = int(price)
+            self.__quantity = int(quantity)
+            self.__sold = int(sold)
             self.__history = history
         else:
             raise ValueError("Price need to be > 0 and quantity >= 0!")

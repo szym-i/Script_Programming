@@ -33,11 +33,6 @@ class Person(ABC):
     def pesel(self):
         return self.__pesel
     
-    
-    #@name.setter
-    #def name(self,var):
-     #   self.__name = var
-
     @property
     def surname(self):
         return self.__surname
@@ -57,7 +52,7 @@ class Reader(Person):
     def __sub__(self, book: LibraryBook):
         book.reader_pesel = ''
         book.return_date = datetime.now()
-        book.history += f"{book.return_date} Czas wypożyczenia:{book.return_date-book.borrow_date}\n"
+        book.history += f"{book.return_date}*"
         print(f"\033[93m Czas wypożyczenia: {book.return_date-book.borrow_date} \033[0m")
         book.borrow_date = ''
 
