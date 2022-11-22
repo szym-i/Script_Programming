@@ -1,11 +1,14 @@
 from book import LibraryBook, ShopBook
 from datetime import datetime, timedelta
+from abc import ABC, abstractmethod
 
-class Person:
+class Person(ABC):
 
-    def __init__(self, name, surname):
+    def __init__(self, name, surname, pesel, history="Pusta historia"):
         self.__name = name
         self.__surname = surname
+        self.__pesel = pesel
+        self.__history = history
 
     def __str__(self):
         return f'{self.__name} {self.__surname}'
@@ -17,10 +20,19 @@ class Person:
         if self.__name == other.name and self.__surname == other.surname:
             return True
         return False
-
+    
+    @abstractmethod
+    def welcome(self):
+        pass
+    
     @property
     def name(self):
         return self.__name
+    
+    @property
+    def pesel(self):
+        return self.__pesel
+    
     
     #@name.setter
     #def name(self,var):
@@ -34,8 +46,7 @@ class Person:
 class Reader(Person):
 
     def __init__(self,name,surname,pesel):
-        super().__init__(name,surname)
-        self.__pesel = pesel
+        super().__init__(name,surname, pesel)
 
     def __add__(self, book: LibraryBook):
         book.reader_pesel = self.pesel
@@ -54,18 +65,31 @@ class Reader(Person):
     def fileformat(self):
         return f'{self.name};{self.surname};{self.pesel}'
 
-    @property
-    def pesel(self):
-        return self.__pesel
-    
-    @pesel.setter
-    def pesel(self,var):
-        self.__pesel = var
-
+    def welcome(self):
+        print("Welcome reader!")
 
 class Shopper(Person):
-    pass
+
+    def __add__(self, book: ShopBook):
+        if book.quantity > 0:
+            ShopBook.revenue += book.price
+            book.quantity -= 1
+            book.sold+=1
+            return "The book has been bought"
+        return "Cannot buy this book"
+
+    def welcome(self):
+        print("Welcome shopper!")
+
 
 if __name__=='__main__':
-    reader = Reader("imie","nazwisko","123")
-    print(reader)
+    shopper = Shopper("imie","nazwisko","123")
+    shopper.welcome()
+    book = ShopBook('title','author',2,3)
+    book2 = ShopBook('title2','author2',10,1)
+    shopper+book
+    shopper+book2
+    shopper+book
+    shopper+book
+    shopper+book
+    print(ShopBook.revenue)

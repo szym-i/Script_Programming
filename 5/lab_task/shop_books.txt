@@ -1,0 +1,2 @@
+Analiza Matematyczna;Michał Lasota;10;1;
+Title;Author;1;1;

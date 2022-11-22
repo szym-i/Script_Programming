@@ -10,19 +10,23 @@ import re
 
 class Library:
 
-    def __init__(self,bf,rf="readers.txt"):
-        self.__books = []
+    def __init__(self,bf,rf="readers.txt",sb="shop_books.txt"):
+        self.__library_books = []
         if bf != None:
-            self.__books = self.read(bf,"books")
+            self.__library_books = self.read(bf,"lb")
         self.__readers = []
         if rf != None:
-            self.__readers = self.read(rf,"readers")
+            self.__readers = self.read(rf,"r")
         self.bf = bf
         self.rf = rf
+        self.__shop_books = []
+        if sb != None:
+            self.__shop_books = self.read(sb,"sb")
+        self.sb = sb
 
     def __str__(self):
         s="     TITLE:              BORROW_DATE:            READER:\n"
-        for b in self.__books:
+        for b in self.__library_books:
             if b.reader_pesel != '':
                 r = self.find_reader(b.reader_pesel)
                 s += f'{b.title:^16} {str(b.borrow_date):^20} {r.name:^14} {r.surname:^20}\n'
@@ -38,10 +42,11 @@ class Library:
     #    for b in self.__books:
     #        s+=f'{b.bid:^3} {b.title:^20} {",".join(map(str,b.authors)):^25} {str(b.borrow_date):^30} {str(b.return_date):^30} {b.reader_pesel:^11}\n'
     #    return s
+    
     @property
-    def books(self):
+    def library_books(self):
         s = ""
-        for e in self.__books:
+        for e in self.__library_books:
             s+=str(e)+'\n'
         return s
 
@@ -62,13 +67,6 @@ class Library:
                 return r
         return "An error occured"
 
-    def search_author(self,author):
-        r = ""
-        for b in self.__books:
-            if author in b.authors:
-                r+=str(b)
-        return r
-
     def add(self,reader):
         self.__readers.append(reader)
 
@@ -86,7 +84,7 @@ class Library:
 
     def save(self):
         f1 = open(self.bf,"w")
-        for b in self.__books:
+        for b in self.__library_books:
             f1.write(b.fileformat+'\n')
         f1.close()
         f2 = open(self.rf,"w")
@@ -96,19 +94,24 @@ class Library:
 
     def parseFileLine(self,line, op):# przekształcenie linii pliku na strukturę danych
         args = line.strip().split(';')
-        if op == "books":
+        if op == "lb":
             try:
                 return LibraryBook(*args)
             except:
-                print("Converting books file line file went wrong")
-        if op == "readers":
+                print("Converting library books file line file went wrong")
+        if op == "r":
             try:
                 return Reader(*args)
             except:
                 print("Converting readers file line went wrong")
+        if op == "sb":
+            try:
+                return ShopBook(*args)
+            except:
+                print("Converting shop books file line file went wrong")
 
     def parseInputLine(self,reader):# przekształcenie linii standardowego wejścia na strukturę danych
-            op = input("Enter operation (+/-/?): ")
+            op = input("Enter operation (+/-): ")
             if op == '-':
                 bid = int(input("Enter book's ID="))
                 if self.is_borrowed_to_reader(bid,reader) == reader.pesel:
@@ -120,12 +123,13 @@ class Library:
                 title = input("Enter book's title:")
                 authors = input("Enter book's authors(comma separated):")
                 print(self.find_if_avaliable(title, authors.split(','), reader))
-            if op == '?':
-                author = input("Enter book's author:")
-                print(self.search_author(author))
             else:
                 return "Enter valid operation"
-
+    
+    @staticmethod
+    def welcome(reader):
+        print(reader.welcome)
+    
     @staticmethod
     def check_filename(filename):
         if os.path.isfile(filename):
@@ -156,7 +160,7 @@ if __name__ == '__main__':
     filename = args.file[0]
     library = Library(filename)
     print(library)
-    print(library.books)
+    print(library.library_books)
     print(library.readers)
     print("Welcome in my library, use Ctrl+D to stop")
     try:
@@ -169,6 +173,7 @@ if __name__ == '__main__':
         reader = Reader(name,surname,pesel)
         if reader in library.readers_list:
             print(f"Welcome back {reader}")
+            library.welcome(reader)
         else:
             if pesel in library.pesele:
                 print("Podszywasz się pod kogoś lub wprowadziłeś niepoprawne dane")
@@ -180,5 +185,5 @@ if __name__ == '__main__':
             print(library.parseInputLine(reader))
     except EOFError:
         print("End state")
-        print(library.books)
+        print(library.library_books)
         library.save()

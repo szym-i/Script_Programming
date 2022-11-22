@@ -96,22 +96,47 @@ class LibraryBook(BasicBook):
 class ShopBook(BasicBook):
 
     revenue = 0
-    def __init__(self,title: str, authors, price: int, quantity: int):
+    def __init__(self,title: str, authors, price: int, quantity: int, history = ""):
         super().__init__(title,authors)
         if price > 0 and quantity >= 0:
             self.__price = price
             self.__quantity = quantity
             self.__sold = 0
+            self.__history = history
         else:
             raise ValueError("Price need to be > 0 and quantity >= 0!")
 
     def __str__(self):
-        return f'"{self.title}" {",".join(map(str,self.authors))}\nRevenue:{self.__price}$ Sold:{self.__sold}'
+        return f'"{self.title}" {",".join(map(str,self.authors))}\nPrice:{self.__price}$ Sold:{self.__sold}\nRevenue from this book:{self.__sold*self.__price}$'
 
-    def buy(self):
-        if self.__quantity > 0:
-            ShopBook.revenue += self.__price
-            self.__quantity -= 1
-            self.__sold+=1
-            return "The book has been bought"
-        return "Cannot buy this book"
+    @property
+    def price(self):
+        return self.__price
+
+    @property
+    def fileformat(self):
+        return f'{self.title};{",".join(map(str,self.authors))};{self.quantity};{self.sold};{self.__history}'
+
+    @property
+    def quantity(self):
+        return self.__quantity
+
+    @quantity.setter
+    def quantity(self,var):
+        self.__quantity = var
+
+    @property
+    def sold(self):
+        return self.__sold
+
+    @sold.setter
+    def sold(self,var):
+        self.__sold = var
+
+    @property
+    def history(self):
+        return self.__history
+
+    @history.setter
+    def history(self,var):
+        self.__history = var
