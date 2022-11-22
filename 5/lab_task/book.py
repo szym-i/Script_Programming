@@ -48,7 +48,8 @@ class LibraryBook(BasicBook):
         return f'{self.title};{",".join(map(str,self.authors))};{self.borrow_date};{self.return_date};{self.reader_pesel};{self.__history}'
     
     def __str__(self):
-        return f'{str(self.bid)} "{self.title}" {",".join(map(str,self.authors))}\nHistory:{self.__history}'
+        hs = "\n".join(self.__history.split("*"))
+        return f'{str(self.bid)} "{self.title}" {",".join(map(str,self.authors))}\nHistory:\n{hs}'
 
     def __repr__(self):
         return f'{self.bid} {self.title} {",".join(map(str,self.authors))} {str(self.borrow_date)} {str(self.return_date)} {self.reader_pesel}'
@@ -96,18 +97,18 @@ class LibraryBook(BasicBook):
 class ShopBook(BasicBook):
 
     revenue = 0
-    def __init__(self,title: str, authors, price: int, quantity: int, sold = 0, history = ""):
+    def __init__(self,title: str, authors, price: int, quantity: int, sold: int):
         super().__init__(title,authors)
         if int(price) > 0 and int(quantity) >= 0:
             self.__price = int(price)
             self.__quantity = int(quantity)
             self.__sold = int(sold)
-            self.__history = history
+            ShopBook.revenue += self.__sold*self.__price
         else:
             raise ValueError("Price need to be > 0 and quantity >= 0!")
 
     def __str__(self):
-        return f'"{self.title}" {",".join(map(str,self.authors))}\nPrice:{self.__price}$ Sold:{self.__sold}\nRevenue from this book:{self.__sold*self.__price}$'
+        return f'"{self.title}" {",".join(map(str,self.authors))}\nQuantity:{self.quantity}\nPrice:{self.__price}$ Sold:{self.__sold}\nRevenue from this book:{self.__sold*self.__price}$'
 
     @property
     def price(self):
@@ -115,7 +116,7 @@ class ShopBook(BasicBook):
 
     @property
     def fileformat(self):
-        return f'{self.title};{",".join(map(str,self.authors))};{self.quantity};{self.sold};{self.__history}'
+        return f'{self.title};{",".join(map(str,self.authors))};{self.price};{self.quantity};{self.sold}'
 
     @property
     def quantity(self):
@@ -132,11 +133,3 @@ class ShopBook(BasicBook):
     @sold.setter
     def sold(self,var):
         self.__sold = var
-
-    @property
-    def history(self):
-        return self.__history
-
-    @history.setter
-    def history(self,var):
-        self.__history = var
