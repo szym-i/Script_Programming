@@ -1,4 +1,4 @@
-from decorators import *
+from decorators import Operacje
 import unittest
 
 class test_decorators(unittest.TestCase):
@@ -19,14 +19,14 @@ class test_decorators(unittest.TestCase):
         op = Operacje()
         self.assertEqual(op.roznica(2, 1), 1)
         self.assertEqual(op.roznica(2), -2)
-        self.assertEqual(op.roznica(), -1)
+        self.assertEqual(op.roznica(),6)
+        self.assertEqual(op.roznica(2, 1),1)
 
         with self.assertRaises(TypeError):
             op.roznica(1,1,1)
         
         op['roznica'] = [39, 11, 12]
-        
-        self.assertEqual(op.roznica(), 28)
+        self.assertEqual(op.roznica(), 12)
 
     def test__setitem__(self):
         op = Operacje()

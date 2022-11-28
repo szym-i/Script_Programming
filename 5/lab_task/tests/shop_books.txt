@@ -1,0 +1,2 @@
+Analiza;Michał;10;0;2
+Kot;Ala;2;1;1

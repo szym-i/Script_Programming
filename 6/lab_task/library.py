@@ -7,6 +7,17 @@ import os
 from reader import Person, Reader
 from book import LibraryBook, ShopBook, BasicBook
 import re
+import warnings
+import logging
+
+def admin():
+    print("Ta funkcja jest dla admina!")
+    warnings.warn("you are not ADMIN!!")
+
+def user(name):
+    def inner(args):
+        print(f"welcome {name}")
+    return inner
 
 class Library:
 
@@ -37,17 +48,6 @@ class Library:
         return f"Total revenue: {ShopBook.revenue}$"
 
     @property
-    def pesele(self):
-        return [e.pesel for e in self.__readers ]
-
-    #@property
-    #def books(self):
-    #    s="BID:        TITLE:                AUTHORS:                   BORROW_DATE:                RETURN_DATE:            READER_PESEL:\n"
-    #    for b in self.__books:
-    #        s+=f'{b.bid:^3} {b.title:^20} {",".join(map(str,b.authors)):^25} {str(b.borrow_date):^30} {str(b.return_date):^30} {b.reader_pesel:^11}\n'
-    #    return s
-    
-    @property
     def library_books(self):
         s = ""
         for e in self.__library_books:
@@ -77,8 +77,9 @@ class Library:
             if r.pesel == reader_pesel:
                 return r
         return "An error occured"
-
+    
     def add(self,reader):
+        print("wywołano funkcje add")
         self.__readers.append(reader)
 
     def find_if_avaliable(self, title, authors, reader):
@@ -126,7 +127,7 @@ class Library:
                 print("Converting shop books file line file went wrong")
 
     def parseInputLine(self,reader):# przekształcenie linii standardowego wejścia na strukturę danych
-            op = input("Enter operation (+/-/buy): ")
+            op = input("Enter operation (+/-/buy/add): ")
             if op == '-':
                 bid = int(input("Enter book's ID="))
                 if self.is_borrowed_to_reader(bid,reader) == reader.pesel:
@@ -142,6 +143,11 @@ class Library:
                 title = input("Enter book's title:")
                 authors = input("Enter book's authors(comma separated):")
                 return self.find_in_shop(title,authors.split(','),reader)
+            if op == 'add':
+                name = input("name:")
+                surname = input("surname:")
+                pesel = input("pesel:")
+                self.add(Reader(name,surname,pesel))
             else:
                 return "Enter valid operation"
     
@@ -154,6 +160,11 @@ class Library:
                 else:
                     return "No copies of this book for sale"
         return "No such book in our shop"
+
+    def find_by_name(self,name):
+        for r in self.__readers:
+            if r.name == name:
+                return r
 
 
     @staticmethod
@@ -182,31 +193,27 @@ class Library:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('file', help = "enter library file", nargs=1)
+    parser.add_argument('user', help = "enter name", nargs=1)
     args = parser.parse_args()
     filename = args.file[0]
+    name = args.user[0]
+    logging.basicConfig(level=logging.INFO, filename="log.log", filemode="w", format=("%(asctime)s - %(levelname)s - %(message)s"))
     library = Library(filename)
+    logging.info(f"{name} is logged")
     print(library)
     print(library.library_books)
     print(library.readers)
     print(library.shop_books)
-    print(library.revenue)
     try:
-        name = input("Enter your name:").strip()
-        surname = input("Enter your surname:").strip()
-        pesel_pattern = re.compile(r'^\d{11}$')#11
-        pesel = "00"
-        while not pesel_pattern.match(pesel):
-            pesel = input("Enter your pesel (11-digits):").strip()
-        reader = Reader(name,surname,pesel)
-        if reader in library.readers_list:
+        reader = library.find_by_name(name)
+        if isinstance(reader, Reader):
             print(f"Welcome back {reader}")
         else:
-            if pesel in library.pesele:
-                print("Podszywasz się pod kogoś lub wprowadziłeś niepoprawne dane")
-                exit() 
+            if name == 'ADMIN':
+                print("Welcome ADMIN.")
             else:
-                print("Creating reader profile for {reader}")
-                library.add(reader)
+                print("Contact ADMIN to create and account.")
+                exit() 
         while True:
             print(library.parseInputLine(reader))
     except EOFError:

@@ -5,10 +5,14 @@ def argumenty(argumenty):
         def wrapper(*args, **kwargs):
             f_arg = len(signature(f).parameters)
             passed_args = list(args)
-            k = f_arg - len(passed_args)
-            if k > len(argumenty):
+            global last
+            last = 'pass'
+            x = f_arg - len(passed_args)
+            if x > len(argumenty):
                 raise TypeError(f'{f.__name__}() takes exactly {f_arg} arguments ({len(argumenty) + len(passed_args)} given)')
-            for i in range(0, k):
+            if len(passed_args) == 0:
+                last = argumenty[f_arg]
+            for i in range(0, x):
                 passed_args.append(argumenty[i])
             return f(*passed_args)
         return wrapper
@@ -27,6 +31,8 @@ class Operacje:
 
     def sumav2(self, a, b, c):
         print(f'{a} + {b} + {c} = {a + b + c}')
+        if last != 'pass':
+            return last
         return a + b + c
 
     @argumenty(argumentyRoznica)
@@ -35,6 +41,8 @@ class Operacje:
         
     def roznicav2(self, x, y):
         print(f'{x} - {y} = {x - y}')
+        if last != 'pass':
+            return last
         return x - y
         
     def update(self):
