@@ -10,7 +10,7 @@ import re
 import warnings
 import logging
 
-def admin():
+def admin(x):
     print("Ta funkcja jest dla admina!")
     warnings.warn("you are not ADMIN!!")
 
@@ -78,6 +78,7 @@ class Library:
                 return r
         return "An error occured"
     
+    @admin
     def add(self,reader):
         print("wywołano funkcje add")
         self.__readers.append(reader)

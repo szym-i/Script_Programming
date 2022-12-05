@@ -77,7 +77,7 @@ blockquote{
 	padding:0px;
 	width:100%;
 	float:left;
-	font-size:85%;
+	font-size:70%;
 	bottom:auto;
     }
     nav {
@@ -85,7 +85,7 @@ blockquote{
 	position:auto;
 	top:auto;
 	width:100%;
-	font-size:2vw;
+	font-size:3vw;
     }
     li {
 	font-size:5vw;
@@ -103,9 +103,9 @@ blockquote{
 	margin-right:10px;
     }
     blockquote{
-	font-size:83%
+	font-size:1.4vw
     }
     h1, h2 {
-	font-size:400%;
+	font-size:9vw;
     }
 }
