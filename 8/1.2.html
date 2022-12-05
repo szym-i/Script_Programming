@@ -1,0 +1,71 @@
+<html>
+  <body onLoad="
+            console.log('Tekst 1');
+            window.alert('Tekst 2');
+            /*document.write('Tekst 3');*/
+	">
+    <div>Treść dokumentu HTML</div>
+    <div>Treść dokumentu HTML</div>
+    <div>Treść dokumentu HTML</div>
+    
+    <script>
+      "use strict";
+      function isNumber(char) {
+        return /^\d$/.test(char);
+      }
+
+      function isLetter(char) {
+        return /[a-z]/.test(char);
+      }
+
+      function cyfry(napis){
+        var result = 0;
+        for (let i = 0; i < napis.length; i++){
+          if (isNumber(napis[i]) === true){
+            result += Number(napis[i]);
+          }
+        }
+        return result;
+      }
+      function litery(napis){
+        var result = 0;
+        for (let i = 0; i < napis.length; i++){
+          if (isLetter(napis[i]) === true){
+            result += 1;
+          }
+        }
+        return result;
+      }
+      function suma(napis,sum){
+        var num = '';
+        for (let i = 0; i < napis.length; i++){
+          if (isNumber(napis[i]) === true){
+            num += napis[i];
+          }
+          else{
+            break;
+          }
+        }
+        return sum+Number(num);
+      }
+
+      let sum = 0;
+      while (true){
+        suma('a',sum);
+        var v1 = window.prompt("Enter your var:");
+        if (v1 === null){
+          break;
+        }
+        sum = suma(v1,sum)
+        window.alert('\t'+cyfry(v1)+'\t'+litery(v1)+'\t'+sum);
+      }
+    </script>
+    
+    <form>
+      <input name="pole_tekstowe" type="text">
+      <input name="pole_liczbowe" type="number">
+      <input type="button" onclick="alert(document.forms[0].elements[0].value+' typ:'+typeof document.forms[0].elements[0].value);alert(document.forms[0].elements[1].value+' typ:'+typeof document.forms[0].elements[1].value);" value="Wypisz">
+    </form>
+   
+  </body>
+</html>
