@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <script src =" https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src =" https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src =" https://unpkg.com/@babel/standalone/babel.min.js "></script>    
+  </head>
+
+  <body>
+    <script type ="text/babel">
+      class Span extends React.Component {
+        render() {
+          const ctr = 12;
+          return <span>{new Date().toLocaleTimeString()}.</span>;
+        }
+      }
+      //const container = document.getElementById('root');
+      //const root = ReactDOM.createRoot(container);
+      ReactDOM.createRoot(document.getElementById('root')).render(<Span/>)//, 1000);
+    </script>
+    <span id="root">0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <input type="text" id="counter" value="10" required minlength="8" maxlength="10" size="10">
+    <span id="root">0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+    <span>0</span>
+  </body>
+</html>

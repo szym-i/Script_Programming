@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          media="screen"
+          href="sheet.css"
+          type="text/css">
+    <title>
+      Tytuł strony
+    </title>
+  </head>
+  
+  <script>
+    function reset(){
+      let a = Array.from(document.getElementsByClassName("c1"));
+      a.forEach(el => {
+        el.classList.remove("class1");
+      });
+      let h1 = Array.from(document.getElementsByClassName("h1"));
+      h1.forEach(h => {
+        h.classList.remove("h-1");
+      });
+      let li = Array.from(document.getElementsByClassName("li"));
+      li.forEach(l => {
+        l.classList.remove("l");
+      });
+      document.getElementById("main").classList.remove("main");
+      document.getElementById("footer").classList.remove("footer");
+      document.getElementById("nav").classList.remove("nav");
+      document.getElementById("a").classList.remove("aside");
+      document.getElementById("a-h1").classList.remove("aside-h1");
+      document.getElementById("b").classList.remove("blockquote");
+    }
+      
+    function set_all(){
+      let c = Array.from(document.getElementsByClassName("c1"));
+      c.forEach(el => {
+        el.classList.add("class1");
+      });
+      let h1 = Array.from(document.getElementsByClassName("h1"));
+      h1.forEach(h => {
+        h.classList.add("h-1");
+      });
+      let li = Array.from(document.getElementsByClassName("li"));
+      li.forEach(l => {
+        l.classList.add("l");
+      });
+      document.getElementById("main").classList.add("main");
+      document.getElementById("footer").classList.add("footer");
+      document.getElementById("nav").classList.add("nav");
+      document.getElementById("a").classList.add("aside");
+      document.getElementById("a-h1").classList.add("aside-h1");
+      document.getElementById("b").classList.add("blockquote");
+    }
+  </script>
+
+  <body>
+
+    <header class='c1'>
+      <h1 class="h1">
+        Tytuł strony 
+      </h1>
+    </header>
+
+    <nav class='c1' id="nav">
+
+      <ul>
+        <li class = "li">
+          <a href="">Element 1</a>
+        </li>
+
+        <li class = "li">
+          <a href="">Element 2</a>
+        </li>
+      </ul>
+    </nav>
+
+    <aside class='c1' id="a">
+      <h1 class='h1' id="a-h1">
+	      Panel boczny
+      </h1>
+
+      <h2 class="h1">
+        Ciekawe odsyłacze
+      </h2>
+
+      <ul>
+        <li>
+          <a href="">Odsyłacz 1</a>
+        </li>
+
+        <li>
+          <a href="">Odsyłacz 2</a>
+        </li>
+
+        <li>
+          <a href="">Odsyłacz 3</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class ='c1' id="main">
+
+      <h1 class="h1">
+        Treść strony
+      </h1>
+
+      <blockquote id ='b'>
+	      <br>Natenczas Wojski chwycił na taśmie przypięty<br> Swój róg bawoli, długi, cętkowany, kręty<br> Jak wąż boa, oburącz do ust go przycisnął,<br> Wzdął policzki jak banię, w oczach krwią zabłysnął,<br>  Zasunął wpół powieki, wciągnął w głąb pół brzucha<br> I do płuc wysłał z niego cały zapas ducha,<br> I zagrał: róg jak wicher, wirowatym dechem<br> Niesie w puszczę muzykę i podwaja echem.<br><br>  Umilkli strzelcy, stali szczwacze zadziwieni<br> Mocą, czystością, dziwną harmoniją pieni.<br> Starzec cały kunszt, którym niegdyś w lasach słynął,<br> Jeszcze raz przed uszami myśliwców rozwinął;<br> Napełnił wnet, ożywił knieje i dąbrowy,<br> Jakby psiarnię w nie wpuścił i rozpoczął łowy.<br><br> Bo w graniu była łowów historyja krótka:<br> Zrazu odzew dźwięczący, rześki: to pobudka;<br> Potem jęki po jękach skomlą: to psów granie;<br> A gdzieniegdzie ton twardszy jak grzmot: to strzelanie.<br><br><br> 
+      </blockquote>
+    </main>
+
+    <footer class = "c1" id='footer'>
+      <a href="mailto:your.email.address">Imię Nazwisko</a>
+    </footer>
+    
+	  <button type="button" onclick="set_all()">Ustaw</button>
+    <button type="button" onclick="reset()">Skasuj</button>
+    </body>
+</html>

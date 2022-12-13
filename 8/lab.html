@@ -1,0 +1,137 @@
+<html>
+  <body>
+    <div>Zadanie lab</div>
+
+    <textarea id="message" name="message" rows="5" cols="33"></textarea>
+    <button name="button" onclick="handle_input()">Enter</button>
+	  
+    <script>
+
+      let history = 'Użytkownik test wypożyczył książkę "test"\n';
+      const book1 = ["1984", ["G.Orwell"], "", "","1984.jpg"];
+      const book2 = ["Python", ["A","A"], "", "","python.jpg"];
+      const book3 = ["test",["test"],"test","test",,"krzyk.jpg"];
+      const book4 = ["Python", ["A","A"], "", "","python.jpg"];
+      let books = [book1,book2,book3,book4];
+      
+      let name ="";
+      while (name ===""){
+        name = window.prompt("Enter your name:");
+      }
+      let surname ="";
+      while (surname ===""){
+        surname = window.prompt("Enter your surname:");
+      }
+
+      function print_books(){
+        let str='Avaliable books:\n';
+        books.forEach(book =>{
+          if (book[2] === '' && book[3] == ''){
+            str+='"'+String(book[0])+'" - '+book[1]+'\n';
+          }
+        });
+        alert(str);
+      }
+
+      function handle_input(){
+        if (name === null || surname === null){
+          alert("Twoim imieniem lub nazwiskiem jest null! Nie możesz wypożyczać książek!");
+        } 
+        var message = document.getElementById('message');
+        m = message.value.split(' ');
+        var op = m.at(0); 
+        var title = m.slice(1,-1).join(' ');
+        var author = m.at(-1);
+        if (op === 'borrow'){
+          var z = 0;
+          books.forEach(book =>{
+            if (book[0] === title){
+              if (z == 0){
+                if (book[1].includes(author)){
+                  if (book[2] === '' && book[3] == ''){
+                    book[2] = String(name);
+                    book[3] = String(surname);
+                    z+=1;
+                    history += 'Użytkownik ' + name + ' wypożyczył "' + book[0] + '".\n';
+                    generateCanvas(); 
+                    console.log("Wypożyczyłeś");
+                  }
+                }
+              }
+            }
+          });
+          if (z == 0){
+            console.log("Nie wypożyczyłeś");
+          }
+        }
+        if (op == "return"){
+          let z = 0;
+          books.forEach(book =>{
+            if (book[0] === title){
+              if (z == 0){
+                if (book[1].includes(author)){
+                  if (book[2] === name && book[3] == surname){
+                    console.log("Pomyślnie oddałeś książkę!");
+                    generateCanvas();
+                    history += 'Użytkownik ' + name + ' oddał "' + book[0] + '".\n'; 
+                    book[2] = '';
+                    book[3] = '';
+                    z+=1;
+                  }
+                }
+              }
+            }
+          });
+          if (z === 0){
+            console.log("Nie możesz oddać tej książki!");
+          }
+        }
+        if (op == "print"){
+          print_books();
+        } 
+        if (op == "history"){
+          console.log(String(history));
+        } 
+        message.value = '';
+      };
+    </script>
+
+    <canvas id="canvas"
+        width="1800"
+        height="400"
+        style="border:1px solid #000000;display:flex">
+      Wygląda na to, że twoja przeglądarka nie obsługuje elementu "canvas" / It looks like your browser does not support the "canvas" element
+    </canvas>
+  
+    <script>
+      function generateCanvas(){
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, 1800, 400);
+        let x = 20;
+        books.forEach(book =>{
+          const img = new Image();
+          img.src = String(book.at(-1));
+          img.onload = function(){
+            ctx.drawImage(img, x, 50,200,320);
+            if (book[2] === '' && book[3] == ''){
+              ctx.lineWidth = 5;
+              ctx.fillStyle = "green";
+              ctx.font = "bold 24px Arial";
+              ctx.fillText("DOSTĘPNE", x, 20);
+            }
+            else{
+              ctx.lineWidth = 5;
+              ctx.fillStyle = "red";
+              ctx.font = "bold 24px Arial";
+              ctx.fillText("NIEDOSTĘPNE", x+5, 20);
+            }
+            x+=280;
+          }
+        });
+      }
+      generateCanvas();
+    </script>
+
+  </body>
+</html>

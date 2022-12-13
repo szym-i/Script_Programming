@@ -27,22 +27,21 @@ function litery(napis){
   }
   return result;
 }
-function suma(napis,sum){
-  var num = '';
-  for (let i = 0; i < napis.length; i++){
-    if (isNumber(napis[i]) === true){
-      num += napis[i];
-    }
-    else{
-      break;
-    }
+function suma(napis){
+  let number = parseInt(napis);
+
+  if (!isNaN(number)){
+    total += number;
   }
-  return sum+Number(num);
+  return total;
 }
 
 describe('The cyfry() function', function() {
   it('Returns 6 for 222', function() {
     expect(cyfry('111')).to.equal(3);
+  });
+  it('Returns 0 for aaa', function() {
+    expect(cyfry('aaa')).to.equal(0);
   });
   it('Returns 2 for 11aa', function() {
     expect(cyfry('11aa')).to.equal(2);
@@ -50,11 +49,17 @@ describe('The cyfry() function', function() {
   it('Returns 15 for a3453a', function() {
     expect(cyfry('a3453a')).to.equal(15);
   });
+  it('Returns 0 for ""', function() {
+    expect(cyfry('')).to.equal(0);
+  });
 });
 
 describe('The litery() function', function() {
   it('Returns 0 for 111', function() {
     expect(litery('111')).to.equal(0);
+  });
+  it('Returns 3 for aaa', function() {
+    expect(litery('aaa')).to.equal(3);
   });
   it('Returns 2 for 11aa', function() {
     expect(litery('11aa')).to.equal(2);
@@ -62,23 +67,29 @@ describe('The litery() function', function() {
   it('Returns 2 for a3453a', function() {
     expect(litery('a3453a')).to.equal(2);
   });
+  it('Returns 0 for ""', function() {
+    expect(cyfry('')).to.equal(0);
+  });
 });
 
+let total = 0;
 describe('The suma() function', function() {
-  let sum = 0;
-
-  sum = suma('11aa',sum)
-  it('Returns 2 for 11aa', function() {
-    expect(sum).to.equal(122);
+  it('Returns 11 for 11aa', function() {
+    expect(suma('11aa')).to.equal(11);
   });
 
-  sum = suma('111',sum)
-  it('Returns 0 for 111', function() {
-    expect(sum).to.equal(122);
+  it('Returns 11 for aaa', function() {
+    expect(suma('aaa')).to.equal(11);
   });
 
-  sum = suma('a3453a',sum)
-  it('Returns 2 for a3453a', function() {
-    expect(sum).to.equal(122);
+  it('Returns 122 for 111', function() {
+    expect(suma('111')).to.equal(122);
+  });
+
+  it('Returns 122 for a3453a', function() {
+    expect(suma('a345a')).to.equal(122);
+  });
+  it('Returns 122 for ""', function() {
+    expect(suma('')).to.equal(122);
   });
 });

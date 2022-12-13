@@ -1,8 +1,8 @@
 <html>
   <body onLoad="
             console.log('Tekst 1');
-            window.alert('Tekst 2');
-            /*document.write('Tekst 3');*/
+            window.alert('Koniec wprowadzania danych');
+            /*document.write('Tekst 3'); nie wolno używać przy użyciu onLoad*/
 	">
     <div>Treść dokumentu HTML</div>
     <div>Treść dokumentu HTML</div>
@@ -19,16 +19,16 @@
       }
 
       function cyfry(napis){
-        var result = 0;
+        let r = 0;
         for (let i = 0; i < napis.length; i++){
           if (isNumber(napis[i]) === true){
-            result += Number(napis[i]);
+            r += Number(napis[i]);
           }
         }
-        return result;
+        return r;
       }
       function litery(napis){
-        var result = 0;
+        let result = 0;
         for (let i = 0; i < napis.length; i++){
           if (isLetter(napis[i]) === true){
             result += 1;
@@ -36,7 +36,7 @@
         }
         return result;
       }
-      function suma(napis,sum){
+      function suma(napis){
         var num = '';
         for (let i = 0; i < napis.length; i++){
           if (isNumber(napis[i]) === true){
@@ -46,18 +46,17 @@
             break;
           }
         }
-        return sum+Number(num);
+        total+=Number(num)
+        return total;
       }
 
-      let sum = 0;
+      let total = 0;
       while (true){
-        suma('a',sum);
         var v1 = window.prompt("Enter your var:");
         if (v1 === null){
           break;
         }
-        sum = suma(v1,sum)
-        window.alert('\t'+cyfry(v1)+'\t'+litery(v1)+'\t'+sum);
+        window.alert('\t'+cyfry(v1)+'\t'+litery(v1)+'\t'+suma(v1));
       }
     </script>
     
