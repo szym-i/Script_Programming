@@ -3,8 +3,8 @@ import * as fs from 'fs';
 const args = process.argv.slice(2);
 
 function check(arg){
-    if (fs.existsSync(arg) === true){
-        if (fs.lstatSync(arg).isDirectory()) {
+    if (fs.exists(arg) === true){
+        if (fs.isDirectory(arg)) {
             return(`'${arg}' jest katalogiem`);
         }
         else{

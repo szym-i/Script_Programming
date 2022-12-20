@@ -10,7 +10,7 @@
 
 // var expect = require('chai').expect;
 var assert = require('assert');
-var module = require('../module');
+var module = require('../module.js');
 
 describe('The sum() method', function () {
   it('Returns 4 for 2+2', function () {
