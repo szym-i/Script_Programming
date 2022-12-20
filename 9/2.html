@@ -12,17 +12,17 @@
   </head>
   
     <script>
-      function myTimer() {
+      function Timer() {
         const ctr = document.getElementById('counter').value;
         if (ctr > 0){
           document.getElementById('counter').value = ctr -1;
-                const spans = document.querySelectorAll("span");
-                spans.forEach(s => {
-                  s.innerHTML = ctr-1;
-                });
+            const spans = document.querySelectorAll("span");
+            spans.forEach(s => {
+              s.innerHTML = ctr-1;
+            });
         }
       }
-      setInterval(myTimer, 1000);
+      setInterval(Timer, 1000);
     </script>
 
     <body>
@@ -40,7 +40,7 @@
       <span>0</span>
       <span>0</span>
       <input type="text" id="counter" value="10" required minlength="8" maxlength="10" size="10">
-      <span id="demo">0</span>
+      <span>0</span>
       <span>0</span>
       <span>0</span>
       <span>0</span>

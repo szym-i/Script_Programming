@@ -1,0 +1,87 @@
+<html>
+  <body>
+    <div>Zadanie lab</div>
+
+    <div id="books" style="display:flex;flex-wrap:wrap;flex-direction:row;">
+      <div id = "1984" style = "border: 1px solid black; width:300px;margin:10px;">
+        <img onclick = 'Borrow("1984number")' src="/home/szymon/studies/sem3/ps/Script_Programming/8/1984.jpg" style="width:70%;margin:10px;">
+        <p id = "1984number"></p>
+      </div>
+
+      <div id = "Python" style = "border: 1px solid black; width:300px;margin:10px;">
+        <img onclick = {python.buttonClicked} src="/home/szymon/studies/sem3/ps/Script_Programming/8/python.jpg" style="width:70%;margin:10px;">
+        <p id = "Pythonnumber"></p>
+      </div>
+
+      <div id = "test" style = "border: 1px solid black; width:300px;margin:10px;">
+        <img onclick = 'Borrow("testnumber")' src="/home/szymon/studies/sem3/ps/Script_Programming/8/krzyk.jpg" style="width:70%;margin:10px;">
+        <p id = "testnumber"></p>
+      </div>
+    </div>
+
+    <div id="users" style="display:flex;flex-wrap:wrap;flex-direction:column;">
+      <h1>Tomasz Bocian</h1>
+      <p id = "Tomasz Bocian"></p>
+      <h1>Grzegorz Lato</h1>
+      <p id = "Grzegorz Lato"></p>
+    </div>
+	  
+    <script>
+      let books = {"1984":[["G.Orwell"],"/home/szymon/studies/sem3/ps/Script_Programming/8/1984.jpg",2],
+        "Python":[["A","A"],"/home/szymon/studies/sem3/ps/Script_Programming/8/python.jpg",0],
+        "test":[["test"],"/home/szymon/studies/sem3/ps/Script_Programming/8/krzyk.jpg",10]};
+
+      function countBooks(){
+        for(var key in books) {
+          a = document.getElementById(key+'number');
+          a.innerHTML = books[key][2];
+        }
+      }
+      countBooks();
+
+      let users = {"Tomasz Bocian": [], "Grzegorz Lato": ["1984"]};
+
+      function addBorrowedBooks(){
+        for(var key in users) {
+          let str='';
+          users[key].forEach(borrowedBook =>{
+            str+=String(borrowedBook);
+          });
+          a = document.getElementById(key);
+          a.innerHTML = str;
+        }
+      }
+      addBorrowedBooks()
+
+      
+      let name ="S";
+      while (name ===""){
+        name = window.prompt("Enter your name:");
+      }
+      let surname ="M";
+      while (surname ===""){
+        surname = window.prompt("Enter your surname:");
+      }
+
+      if (name === null || surname === null){
+        alert("Twoim imieniem lub nazwiskiem jest null! Nie możesz wypożyczać książek!");
+      }
+      else{
+        current_user = [name, surname, []];
+        users.append(current_user);
+      } 
+
+      function Borrow(id){
+        n = document.getElementById(id).innerHTML
+        if (n >  0){
+          document.getElementById(id).innerHTML -=1;
+        }
+      }
+
+      function Return(){
+        pass;
+      }
+    </script>
+
+  </body>
+</html>
