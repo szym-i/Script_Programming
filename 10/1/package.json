@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "jest": "^25.2.2",
+    "jsdoc": "^4.0.0",
     "supertest": "^6.3.3"
   }
 }

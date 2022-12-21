@@ -1,21 +1,60 @@
-import * as fs from 'fs';
+const fs = require('fs');
+const http = require("http");
+var debug = require('debug')('http');
 
-const args = process.argv.slice(2);
-
-function check(arg){
-    if (fs.exists(arg) === true){
-        if (fs.isDirectory(arg)) {
-            return(`'${arg}' jest katalogiem`);
+function requestListener(request, response) {
+	var url = new URL(request.url, `http://${request.headers.host}`);
+	if (url.pathname == '/submit') {
+		if (request.method == 'GET') {
+            let p = url.searchParams.get('path');
+			process(response, p);
         }
-        else{
-            return(`'${arg}' jest plikiem, a jego zawartością jest:\n${fs.readFileSync(arg, 'utf8')}`);
+        else {
+            response.writeHead(405, { "Content-Type": "text/plain; charset=utf-8" });
+			response.write(`This application does not support the ${request.method} method`);
+            response.end();
         }
-    }
-    else{
-        return `Plik '${arg}' nie istnieje`
-    }
+	}
+	else {
+		response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+		response.write(`<form method="GET" action="/submit">
+	    					<label for="path">Give a path</label>
+	    					<input name="path">
+	    					<br>
+	    					<input type="submit">
+	    					<input type="reset">
+	    				</form>`);
+		response.end();
+	}
 }
 
-args.forEach(arg =>{
-    console.log(check(arg));
-});
+function process(response, p) {
+    fs.stat(p, (err, stats) => {
+        if (err) {
+            response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+            response.write("path doesn't exist");
+            response.end();
+            return;
+        }
+        else{
+            response.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+            if (stats.isDirectory() === true){
+                response.write("\npath is directory.");
+            };    
+            if (stats.isFile())
+            {
+                response.write("\npath is file.");
+                fs.readFile(p, (err, data) => {
+                    response.write("\nContent of the file:\n" + data);
+                    response.end();
+                });
+            }
+            else response.end();
+        }
+    });
+}
+
+var server = http.createServer(requestListener);
+server.listen(8080);
+debug("The server was started on port 8080");
+debug("To stop the server, press 'CTRL + C'");

@@ -1,3 +1,5 @@
 import {Operation} from './module.js';
 
-console.log(new Operation(10, 2).sum());
+const args = process.argv.slice(2,4);
+
+console.log(new Operation(Number(args.at(0)), Number(args.at(1))).sum());
