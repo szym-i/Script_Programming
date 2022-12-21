@@ -48,15 +48,16 @@ function readHTML(arg){
 }
 
 function handle(m){
-    console.log(m);
+    debug(`Received message:${m}`);
     arr = m.split('+');
+    if (arr.length < 3){
+        console.log('Błąd!');
+    }
     console.log(arr);
     var op = arr.at(0); 
     var title = arr.slice(1,-1).join(' ');
     var author = arr.at(-1);
-    console.log(`op = ${op}`);
-    console.log(`title = ${title}`);
-    console.log(`author = ${author}`);
+    debug(`op = ${op}\ntitle = ${title}\nauthor = ${author}`);
 }
 
 function requestListener(request, response) {
@@ -75,50 +76,11 @@ function requestListener(request, response) {
             response.end('\npost received');
         })
     }
-	// if (url.pathname == '/submit') {
-	// 	if (request.method == 'GET') {
-    //         let p = url.searchParams.get('path');
-	// 		process(response, p);
-    //     }
-    //     else {
-    //         response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-	// 		response.write(`This application does not support the ${request.method} method`);
-    //         response.end();
-    //     }
-	// }
 	else {
 		response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-        //use readfile żeby nie pierdolić się z tym htmlem
 		response.write(readHTML('response.html'));
 		response.end();
 	}
-}
-
-function process(response, p) {
-    console.log(p.split(''));
-    fs.stat(p, (err, stats) => {
-        if (err) {
-            response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-            response.write("path doesn't exist");
-            response.end();
-            return;
-        }
-        else{
-            response.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
-            if (stats.isDirectory() === true){
-                response.write("\npath is directory.");
-            };    
-            if (stats.isFile())
-            {
-                response.write("\npath is file.");
-                fs.readFile(p, (err, data) => {
-                    response.write("\nContent of the file:\n" + data);
-                    response.end();
-                });
-            }
-            else response.end();
-        }
-    });
 }
 
 var server = http.createServer(requestListener);
