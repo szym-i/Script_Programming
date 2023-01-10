@@ -143,6 +143,10 @@ describe('GET /json/:name', function () {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>`
+              res.text.split('').forEach(function(val, i){
+                if (val != b.charAt(i))
+                  console.log(res.text.at(i).charCodeAt(0) + ' ' + i + ' '+ b.at(i).charCodeAt(0));         
+              });
               if (res.text != b)
                 throw new Error('response doesn\'t match')
             }
