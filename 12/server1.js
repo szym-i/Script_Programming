@@ -9,7 +9,7 @@ app.set('view engine', 'pug');
 app.locals.pretty = app.get('env') === 'development';
 
 // Determining the contents of the middleware stack
-app.use(logger('dev'));
+app.use(logger('dev'));     
 // app.use(express.static(__dirname + '/public'));
 
 // *** Route definitions ***

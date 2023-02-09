@@ -14,10 +14,6 @@ html(lang='en')
                 //-----------------------------------------------
                 const xhr = new XMLHttpRequest();
 
-                //-----------------------
-                // Observers registration
-                //-----------------------
-
                 // If the request was successful
                 xhr.addEventListener("load", function (evt) {
                     if (xhr.status === 200) {
@@ -96,41 +92,6 @@ html(lang='en')
                 });
             }
 
-            /***********************************************/
-            /* Same as above but using 'async' and 'await' */
-            /***********************************************/
-            /*
-            async function requestFetchAPI() {
-                try {
-                    response = await fetch('/submit', {
-                        headers: {
-                            // 'Accept': 'application/json'
-                            // 'Accept': 'application/xml'
-                        }
-                    }); // Execution of the (asynchronous) query to the web server — a promise is created
-
-                    // If the promise is fulfilled, then 'response' has a value
-                    if (!response.ok)
-                        throw Error(response.statusText);
-                    if (!response.headers.get('content-type')?.includes('application/json')) {
-                        // If the received data is plain text or an XML document
-                        const result = response.text();
-                        window.alert(result); // show the Promise object
-                        console.log(result);
-                    }
-                    else {
-                        //If the received data is a JSON document
-                        const result = response.json();
-                        window.alert(result); // show the Promise object
-                        console.log(result);
-                    }
-                }
-                catch (error) { // if the promise is rejected
-                    window.alert(error);
-                }
-            }
-            */
-
             function requestAjaxGet() {
                 var xhr = new XMLHttpRequest();
 
@@ -200,13 +161,13 @@ html(lang='en')
                         });
                     })
                     .catch(function (error) { 
-                    window.alert(error);
+                        window.alert(error);
                     });
             }
 
     body
         main
-            form(method='get' action='/submit')
+            form(method='GET' action='/submit')
                 label
                     | Perform a query to the web server with the
                     strong GET
@@ -215,7 +176,7 @@ html(lang='en')
                 input(type='button' value='Using AJAX' onclick='requestAJAX()')
                 input(type='button' value='Using Fetch API' onclick='requestFetchAPI()')
             form
-                input(type='text' id='imie')
+                input(type='text' id='imie' action='/submit')
                 input(type='button' value='Ajax (GET)' style="background-color:blue; color:white" onclick='requestAjaxGet()')
                 input(type='button' value='Ajax (POST)' style="background-color:blue; color:white" onclick='requestAjaxPost()')
                 input(type='button' value='Fetch API (GET)' style="background-color:blue; color:white" onclick='requestFetchGet()')
