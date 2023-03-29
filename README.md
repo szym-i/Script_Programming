@@ -7,4 +7,4 @@ My results:
 |---|---|---|---|----|-----|---|---|----|---|---|---|---|---|------|------------|
 |4.0|4.0|4.3|4.5|3.75| 2.0 |3.0|4.5|4.25|2.5|3.0|3.0|2.8|0.0| 45.6 |    4.0     |
 
-> Bonus - points I could get by winning Python knowledge quiz
+> Bonus - extra points for winning Python knowledge quiz
