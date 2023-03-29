@@ -1,7 +1,7 @@
 # Script_Programming
 My solutions to *Script Programming* course in AGH UST \
 Laboratory classes lecturer : **Stanisław Polak** \
-Each laboratory, I could get 5 points, 3x1 for home tasks, and max 2 for tasks during lesson . \
+Each laboratory, I could get 5 points, 3x1 for home tasks, and max 2 for completing lab tasks during lesson. \
 My results:
 | 1 | 2 | 3 | 4 | 5  |Bonus| 6 | 7 | 8  | 9 |10 |11 |12 | 13|Total | Final Grade|
 |---|---|---|---|----|-----|---|---|----|---|---|---|---|---|------|------------|
